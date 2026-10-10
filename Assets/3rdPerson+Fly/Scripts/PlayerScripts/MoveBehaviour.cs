@@ -4,186 +4,216 @@ using UnityEngine.Serialization;
 // MoveBehaviour inherits from GenericBehaviour. This class corresponds to basic walk and run behaviour, it is the default behaviour.
 public class MoveBehaviour : GenericBehaviour
 {
-	public float walkSpeed = 0.15f;                 // Default walk speed.
-	public float runSpeed = 1.0f;                   // Default run speed.
-	public float sprintSpeed = 2.0f;                // Default sprint speed.
-	public float speedDampTime = 0.1f;              // Default damp time to change the animations based on current speed.
-	public string jumpButton = "Jump";              // Default jump button.
-	public float jumpHeight = 1.5f;                 // Default jump height.
-	public float jumpInertialForce = 10f;          // Default horizontal inertial force when jumping.
+    public float walkSpeed = 0.5f;                  // Default walk speed.
+    public float runSpeed = 2.0f;                   // Default run speed.
+    public float sprintSpeed = 4.0f;                // Default sprint speed.
+    public float speedDampTime = 0.1f;              // Default damp time to change the animations based on current speed.
+    public float animatorSpeedMultiplier = 1.0f;    // Multiplier to scale Root Motion velocity.
+    public string jumpButton = "Jump";              // Default jump button.
+    public float jumpHeight = 1.5f;                 // Default jump height.
+    public float jumpInertialForce = 10f;           // Default horizontal inertial force when jumping.
 
-	private float speed, speedSeeker;               // Moving speed.
-	private int jumpBool;                           // Animator variable related to jumping.
-	private int groundedBool;                       // Animator variable related to whether or not the player is on ground.
-	private bool jump;                              // Boolean to determine whether or not the player started a jump.
-	private bool isColliding;                       // Boolean to determine if the player has collided with an obstacle.
+    private float speed;                            // Moving speed.
+    private int jumpBool;                           // Animator variable related to jumping.
+    private int groundedBool;                       // Animator variable related to whether or not the player is on ground.
+    private bool jump;                              // Boolean to determine whether or not the player started a jump.
+    private bool isColliding;                       // Boolean to determine if the player has collided with an obstacle.
 
-	// Start is always called after any Awake functions.
-	void Start()
-	{
-		// Set up the references.
-		jumpBool = Animator.StringToHash("Jump");
-		groundedBool = Animator.StringToHash("Grounded");
-		behaviourManager.GetAnim.SetBool(groundedBool, true);
+    // Start is always called after any Awake functions.
+    void Start()
+    {
+        // Set up the references.
+        jumpBool = Animator.StringToHash("Jump");
+        groundedBool = Animator.StringToHash("Grounded");
+        behaviourManager.GetAnim.SetBool(groundedBool, true);
 
-		// Subscribe and register this behaviour as the default behaviour.
-		behaviourManager.SubscribeBehaviour(this);
-		behaviourManager.RegisterDefaultBehaviour(this.behaviourCode);
-		speedSeeker = runSpeed;
-	}
+        // Subscribe and register this behaviour as the default behaviour.
+        behaviourManager.SubscribeBehaviour(this);
+        behaviourManager.RegisterDefaultBehaviour(this.behaviourCode);
+    }
 
-	// Update is used to set features regardless the active behaviour.
-	void Update()
-	{
-		// Get jump input.
-		if (!jump && Input.GetButtonDown(jumpButton) && behaviourManager.IsCurrentBehaviour(this.behaviourCode) && !behaviourManager.IsOverriding())
-		{
-			jump = true;
-		}
-	}
+    // Update is used to set features regardless the active behaviour.
+    void Update()
+    {
+        // Get jump input.
+        if (!jump && Input.GetButtonDown(jumpButton) && behaviourManager.IsCurrentBehaviour(this.behaviourCode) && !behaviourManager.IsOverriding())
+        {
+            jump = true;
+        }
+    }
 
-	// LocalFixedUpdate overrides the virtual function of the base class.
-	public override void LocalFixedUpdate()
-	{
-		// Call the basic movement manager.
-		MovementManagement(behaviourManager.GetH, behaviourManager.GetV);
+    // LocalFixedUpdate overrides the virtual function of the base class.
+    public override void LocalFixedUpdate()
+    {
+        // Call the basic movement manager.
+        MovementManagement(behaviourManager.GetH, behaviourManager.GetV);
 
-		// Call the jump manager.
-		JumpManagement();
-	}
+        // Call the jump manager.
+        JumpManagement();
+    }
 
-	// Execute the idle and walk/run jump movements.
-	void JumpManagement()
-	{
-		// Start a new jump.
-		if (jump && !behaviourManager.GetAnim.GetBool(jumpBool) && behaviourManager.IsGrounded())
-		{
-			// Set jump related parameters.
-			behaviourManager.LockTempBehaviour(this.behaviourCode);
-			behaviourManager.GetAnim.SetBool(jumpBool, true);
-			// Is a locomotion jump?
-			if (behaviourManager.GetAnim.GetFloat(speedFloat) > 0.1)
-			{
-				// Temporarily change player friction to pass through obstacles.
-				GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
-				GetComponent<CapsuleCollider>().material.staticFriction = 0f;
-				// Remove vertical velocity to avoid "super jumps" on slope ends.
-				RemoveVerticalVelocity();
-				// Set jump vertical impulse velocity.
-				float velocity = 2f * Mathf.Abs(Physics.gravity.y) * jumpHeight;
-				velocity = Mathf.Sqrt(velocity);
-				behaviourManager.GetRigidBody.AddForce(Vector3.up * velocity, ForceMode.VelocityChange);
-			}
-		}
-		// Is already jumping?
-		else if (behaviourManager.GetAnim.GetBool(jumpBool))
-		{
-			// Keep forward movement while in the air.
-			if (!behaviourManager.IsGrounded() && !isColliding && behaviourManager.GetTempLockStatus())
-			{
-				behaviourManager.GetRigidBody.AddForce(transform.forward * (jumpInertialForce * Physics.gravity.magnitude * sprintSpeed), ForceMode.Acceleration);
-			}
-			// Has landed?
-			if ((behaviourManager.GetRigidBody.linearVelocity.y < 0) && behaviourManager.IsGrounded())
-			{
-				behaviourManager.GetAnim.SetBool(groundedBool, true);
-				// Change back player friction to default.
-				GetComponent<CapsuleCollider>().material.dynamicFriction = 0.6f;
-				GetComponent<CapsuleCollider>().material.staticFriction = 0.6f;
-				// Set jump related parameters.
-				jump = false;
-				behaviourManager.GetAnim.SetBool(jumpBool, false);
-				behaviourManager.UnlockTempBehaviour(this.behaviourCode);
-			}
-		}
-	}
+    // Intercepta el movimiento por raíz (Root Motion) para aplicarlo manualmente con un multiplicador de velocidad
+    void OnAnimatorMove()
+    {
+        if (behaviourManager != null && behaviourManager.GetAnim != null && behaviourManager.IsGrounded() && !behaviourManager.GetAnim.GetBool(jumpBool))
+        {
+            // Toma el delta de posición calculado por el Animator debido al Root Motion y multiplícalo por tu escala
+            Vector3 movementDelta = behaviourManager.GetAnim.deltaPosition * animatorSpeedMultiplier;
+            movementDelta.y = behaviourManager.GetRigidBody.linearVelocity.y * Time.deltaTime; // Preserva la gravedad
 
-	// Deal with the basic player movement
-	void MovementManagement(float horizontal, float vertical)
-	{
-		// On ground, obey gravity.
-		if (behaviourManager.IsGrounded())
-			behaviourManager.GetRigidBody.useGravity = true;
+            // Mueve el Rigidbody usando el desplazamiento del Root Motion modificado
+            behaviourManager.GetRigidBody.MovePosition(behaviourManager.GetRigidBody.position + movementDelta);
 
-		// Avoid takeoff when reached a slope end.
-		else if (!behaviourManager.GetAnim.GetBool(jumpBool) && behaviourManager.GetRigidBody.linearVelocity.y > 0)
-		{
-			RemoveVerticalVelocity();
-		}
+            // Aplica la rotación del Root Motion de forma fluida
+            Quaternion newRotation = behaviourManager.GetRigidBody.rotation * behaviourManager.GetAnim.deltaRotation;
+            behaviourManager.GetRigidBody.MoveRotation(newRotation);
+        }
+    }
 
-		// Call function that deals with player orientation.
-		Rotating(horizontal, vertical);
+    // Execute the idle and walk/run jump movements.
+    void JumpManagement()
+    {
+        // Start a new jump.
+        if (jump && !behaviourManager.GetAnim.GetBool(jumpBool) && behaviourManager.IsGrounded())
+        {
+            // Set jump related parameters.
+            behaviourManager.LockTempBehaviour(this.behaviourCode);
+            behaviourManager.GetAnim.SetBool(jumpBool, true);
+            // Is a locomotion jump?
+            if (behaviourManager.GetAnim.GetFloat(speedFloat) > 0.1)
+            {
+                // Temporarily change player friction to pass through obstacles.
+                GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
+                GetComponent<CapsuleCollider>().material.staticFriction = 0f;
+                // Remove vertical velocity to avoid "super jumps" on slope ends.
+                RemoveVerticalVelocity();
+                // Set jump vertical impulse velocity.
+                float velocity = 2f * Mathf.Abs(Physics.gravity.y) * jumpHeight;
+                velocity = Mathf.Sqrt(velocity);
+                behaviourManager.GetRigidBody.AddForce(Vector3.up * velocity, ForceMode.VelocityChange);
+            }
+        }
+        // Is already jumping?
+        else if (behaviourManager.GetAnim.GetBool(jumpBool))
+        {
+            // Keep forward movement while in the air.
+            if (!behaviourManager.IsGrounded() && !isColliding && behaviourManager.GetTempLockStatus())
+            {
+                behaviourManager.GetRigidBody.AddForce(transform.forward * (jumpInertialForce * Physics.gravity.magnitude * sprintSpeed), ForceMode.Acceleration);
+            }
+            // Has landed?
+            if ((behaviourManager.GetRigidBody.linearVelocity.y < 0) && behaviourManager.IsGrounded())
+            {
+                behaviourManager.GetAnim.SetBool(groundedBool, true);
+                // Change back player friction to default.
+                GetComponent<CapsuleCollider>().material.dynamicFriction = 0.6f;
+                GetComponent<CapsuleCollider>().material.staticFriction = 0.6f;
+                // Set jump related parameters.
+                jump = false;
+                behaviourManager.GetAnim.SetBool(jumpBool, false);
+                behaviourManager.UnlockTempBehaviour(this.behaviourCode);
+            }
+        }
+    }
 
-		// Set proper speed.
-		Vector2 dir = new Vector2(horizontal, vertical);
-		speed = Vector2.ClampMagnitude(dir, 1f).magnitude;
-		// This is for PC only, gamepads control speed via analog stick.
-		speedSeeker += Input.GetAxis("Mouse ScrollWheel");
-		speedSeeker = Mathf.Clamp(speedSeeker, walkSpeed, runSpeed);
-		speed *= speedSeeker;
-		if (behaviourManager.IsSprinting())
-		{
-			speed = sprintSpeed;
-		}
+    // Deal with the basic player movement
+    void MovementManagement(float horizontal, float vertical)
+    {
+        // On ground, obey gravity.
+        if (behaviourManager.IsGrounded())
+            behaviourManager.GetRigidBody.useGravity = true;
 
-		behaviourManager.GetAnim.SetFloat(speedFloat, speed, speedDampTime, Time.deltaTime);
-	}
+        // Avoid takeoff when reached a slope end.
+        else if (!behaviourManager.GetAnim.GetBool(jumpBool) && behaviourManager.GetRigidBody.linearVelocity.y > 0)
+        {
+            RemoveVerticalVelocity();
+        }
 
-	// Remove vertical rigidbody velocity.
-	private void RemoveVerticalVelocity()
-	{
-		Vector3 horizontalVelocity = behaviourManager.GetRigidBody.linearVelocity;
-		horizontalVelocity.y = 0;
-		behaviourManager.GetRigidBody.linearVelocity = horizontalVelocity;
-	}
+        // Call function that deals with player orientation.
+        Rotating(horizontal, vertical);
 
-	// Rotate the player to match correct orientation, according to camera and key pressed.
-	Vector3 Rotating(float horizontal, float vertical)
-	{
-		// Get camera forward direction, without vertical component.
-		Vector3 forward = behaviourManager.playerCamera.TransformDirection(Vector3.forward);
+        // Set proper speed based strictly on input direction and keyboard states.
+        Vector2 dir = new Vector2(horizontal, vertical);
+        float inputMagnitude = Vector2.ClampMagnitude(dir, 1f).magnitude;
 
-		// Player is moving on ground, Y component of camera facing is not relevant.
-		forward.y = 0.0f;
-		forward = forward.normalized;
+        if (inputMagnitude > 0.1f)
+        {
+            speed = walkSpeed;
+        }
+        else
+        {
+            speed = 0f;
+        }
 
-		// Calculate target direction based on camera forward and direction key.
-		Vector3 right = new Vector3(forward.z, 0, -forward.x);
-		Vector3 targetDirection = forward * vertical + right * horizontal;
+        if (inputMagnitude > 0.5f)
+        {
+            speed = runSpeed;
+        }
 
-		// Lerp current direction to calculated target direction.
-		if ((behaviourManager.IsMoving() && targetDirection != Vector3.zero))
-		{
-			Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+        if (behaviourManager.IsSprinting())
+        {
+            speed = sprintSpeed;
+        }
 
-			Quaternion newRotation = Quaternion.Slerp(behaviourManager.GetRigidBody.rotation, targetRotation, behaviourManager.turnSmoothing);
-			behaviourManager.GetRigidBody.MoveRotation(newRotation);
-			behaviourManager.SetLastDirection(targetDirection);
-		}
-		// If idle, Ignore current camera facing and consider last moving direction.
-		if (!(Mathf.Abs(horizontal) > 0.9 || Mathf.Abs(vertical) > 0.9))
-		{
-			behaviourManager.Repositioning();
-		}
+        // Envía el valor al Blend Tree para cambiar la animación visual
+        behaviourManager.GetAnim.SetFloat(speedFloat, speed, speedDampTime, Time.deltaTime);
+    }
 
-		return targetDirection;
-	}
+    // Remove vertical rigidbody velocity.
+    private void RemoveVerticalVelocity()
+    {
+        Vector3 horizontalVelocity = behaviourManager.GetRigidBody.linearVelocity;
+        horizontalVelocity.y = 0;
+        behaviourManager.GetRigidBody.linearVelocity = horizontalVelocity;
+    }
 
-	// Collision detection.
-	private void OnCollisionStay(Collision collision)
-	{
-		isColliding = true;
-		// Slide on vertical obstacles
-		if (behaviourManager.IsCurrentBehaviour(this.GetBehaviourCode()) && collision.GetContact(0).normal.y <= 0.1f)
-		{
-			GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
-			GetComponent<CapsuleCollider>().material.staticFriction = 0f;
-		}
-	}
-	private void OnCollisionExit(Collision collision)
-	{
-		isColliding = false;
-		GetComponent<CapsuleCollider>().material.dynamicFriction = 0.6f;
-		GetComponent<CapsuleCollider>().material.staticFriction = 0.6f;
-	}
+    // Rotate the player to match correct orientation, according to camera and key pressed.
+    Vector3 Rotating(float horizontal, float vertical)
+    {
+        // Get camera forward direction, without vertical component.
+        Vector3 forward = behaviourManager.playerCamera.TransformDirection(Vector3.forward);
+
+        // Player is moving on ground, Y component of camera facing is not relevant.
+        forward.y = 0.0f;
+        forward = forward.normalized;
+
+        // Calculate target direction based on camera forward and direction key.
+        Vector3 right = new Vector3(forward.z, 0, -forward.x);
+        Vector3 targetDirection = forward * vertical + right * horizontal;
+
+        // Lerp current direction to calculated target direction.
+        if ((behaviourManager.IsMoving() && targetDirection != Vector3.zero))
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+
+            Quaternion newRotation = Quaternion.Slerp(behaviourManager.GetRigidBody.rotation, targetRotation, behaviourManager.turnSmoothing);
+            behaviourManager.GetRigidBody.MoveRotation(newRotation);
+            behaviourManager.SetLastDirection(targetDirection);
+        }
+        // If idle, Ignore current camera facing and consider last moving direction.
+        if (!(Mathf.Abs(horizontal) > 0.9 || Mathf.Abs(vertical) > 0.9))
+        {
+            behaviourManager.Repositioning();
+        }
+
+        return targetDirection;
+    }
+
+    // Collision detection.
+    private void OnCollisionStay(Collision collision)
+    {
+        isColliding = true;
+        // Slide on vertical obstacles
+        if (behaviourManager.IsCurrentBehaviour(this.GetBehaviourCode()) && collision.GetContact(0).normal.y <= 0.1f)
+        {
+            GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
+            GetComponent<CapsuleCollider>().material.staticFriction = 0f;
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        isColliding = false;
+        GetComponent<CapsuleCollider>().material.dynamicFriction = 0.6f;
+        GetComponent<CapsuleCollider>().material.staticFriction = 0.6f;
+    }
 }

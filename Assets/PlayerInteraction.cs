@@ -5,29 +5,8 @@ public class PlayerInteraction : MonoBehaviour
     private bool isNearTrash = false;
     private GameObject trashInRange = null;
 
-    private Animator animator;
-
-    void Start()
-    {
-        // Buscar Animator del personaje hijo
-        animator = GetComponentInChildren<Animator>();
-    }
-
     void Update()
     {
-        // Detectar movimiento del jugador
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-
-        // Calcular velocidad
-        float speed = new Vector3(horizontal, 0, vertical).magnitude;
-
-        // Enviar velocidad al Animator
-        if (animator != null)
-        {
-            animator.SetFloat("Speed", speed * 5f);
-        }
-
         // Presiona E para recoger basura
         if (isNearTrash && Input.GetKeyDown(KeyCode.E))
         {
