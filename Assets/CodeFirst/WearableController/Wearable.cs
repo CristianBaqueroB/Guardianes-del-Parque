@@ -34,7 +34,7 @@ public class Wearable : ScriptableObject
     [SerializeField]
     private Guid _id;
 
-    [SerializeField]
+    // Se eliminó [SerializeField] de aquí ya que es una propiedad getter
     public GameObject AttachedGameObject { get { return _attachedGameObject; } }
 
     [SerializeField]
@@ -66,7 +66,6 @@ public class Wearable : ScriptableObject
     private Wearable()
     {
         _id = Guid.NewGuid();
-        
     }
 
     #endregion Constructor
