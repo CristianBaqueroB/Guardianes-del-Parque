@@ -1,14 +1,165 @@
 fileFormatVersion: 2
 guid: b17d73594c475ec49a30a6228cb6624d
 ModelImporter:
-  serializedVersion: 22200
+  serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Carpet_Loop_Pattern
+    second: {fileID: 2100000, guid: 227f79bfd079e40498108d3e1ffeb4a8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Color_C23
+    second: {fileID: 2100000, guid: f97e618c05fec9b449b0f2b42144ccab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Huella
+    second: {fileID: 2100000, guid: b4067313c4d68c74ea5bac1b6ebec1c1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material__1
+    second: {fileID: 2100000, guid: c99d11e015d34884a89e16bbc3eace20, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pavers_Flagstone_Gray
+    second: {fileID: 2100000, guid: cdc44ea126abaf84dbf3216f083feb82, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pavers_Flagstone_Gray_1
+    second: {fileID: 2100000, guid: a18dc2903c7c40e4a9a0fccda0887fbe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SW_6128_Blonde
+    second: {fileID: 2100000, guid: 988a37127ec19124a92a8d9da9a586e5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SW_6769_Maxi_Teal
+    second: {fileID: 2100000, guid: e780e90b0edbcfe4f872f238466cef66, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Water_Pool_Light
+    second: {fileID: 2100000, guid: b551a174564c1f0439509538ec06b97f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood_Cherry_Original
+    second: {fileID: 2100000, guid: fada357a251e57242b90c6772c1db60c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood_OSB
+    second: {fileID: 2100000, guid: c5705e39331461d4e9f092392f1b89a2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood_Veneer_01
+    second: {fileID: 2100000, guid: ca803948e1f449343b231ccdcf79a245, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _0008_LavenderBlush
+    second: {fileID: 2100000, guid: 855d06a63b7b9f9498774d3c1899a695, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _0012_Bisque
+    second: {fileID: 2100000, guid: 11c380631f12eec40bee8e81b00897a8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _0019_Crimson
+    second: {fileID: 2100000, guid: ccd3579dece401f4d8e064c6da218c56, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _0047_Khaki
+    second: {fileID: 2100000, guid: 73ec4b5dbf9c82c40a282232da420022, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _0128_White
+    second: {fileID: 2100000, guid: 070f27395cde284459a934e070e36e59, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _0137_Black
+    second: {fileID: 2100000, guid: 4920f932aad893845905890a63c32abe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _1205_C
+    second: {fileID: 2100000, guid: c81e9091320861b46895a67bc8e0d813, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _1_-_Default1
+    second: {fileID: 2100000, guid: 65a03ee60ae80bc4ca5c195464a8aac8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _2705_C
+    second: {fileID: 2100000, guid: 728b4d2dbc881ba48806b88491a07cb8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _50x50_CaneyStone_Fabric
+    second: {fileID: 2100000, guid: 9baf1071d3a476647b2364ab3e3778d4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: __Beige_1
+    second: {fileID: 2100000, guid: 8dfe85457b322484eaba060bc61256c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: __Brown_
+    second: {fileID: 2100000, guid: 5f666e57002bd9a4599466e872dbda64, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: __Brown__0
+    second: {fileID: 2100000, guid: b19f87f6abd51d041ab8804c3112aef3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: __Chipboard_
+    second: {fileID: 2100000, guid: f051795887965e04c9f300e49d31146d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: __Pale_Brown_
+    second: {fileID: 2100000, guid: ea5bcef1ef1acec4595410aa945bfe47, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: __Tan_
+    second: {fileID: 2100000, guid: 8617c744ac258204baf4d3d1bf1a4174, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: material
+    second: {fileID: 2100000, guid: c152526bd0e6d4448aae9e44a5023b50, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: skp_front_defaul
+    second: {fileID: 2100000, guid: 7b12191de5341794cab8d4938922819a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
     materialSearch: 1
     materialLocation: 1
+    searchTexturesGlobally: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -16,8 +167,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -40,6 +189,8 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
+    preBakeConvexCollisionMesh: 0
+    preBakeTriangleCollisionMesh: 0
     importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
@@ -58,6 +209,11 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
+    importUVs: -1
+    importVertexColors: 1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -77,6 +233,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+    calculateBlendshapeNormalsDeltaFromImportedNormals: 1
   referencedClips: []
   importAnimation: 1
   humanDescription:
