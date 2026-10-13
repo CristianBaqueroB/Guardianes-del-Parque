@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,10 +9,9 @@ public class WearableOutfit : ScriptableObject
     #region Fields
 
     public Guid Id { get { return _id; } }
-    [SerializeField]
     private Guid _id;
 
-    [SerializeField]
+    [System.NonSerialized]
     public List<Guid> Wearables;
 
     [SerializeField]

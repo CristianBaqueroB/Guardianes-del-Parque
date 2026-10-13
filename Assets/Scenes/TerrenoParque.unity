@@ -193,6 +193,138 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9aed04247f22704d9a0d33686def64f, type: 3}
+--- !u!21 &9277206
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Mat_Vidrio
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _ENVIRONMENTREFLECTIONS_OFF
+  - _METALLICSPECGLOSSMAP
+  - _NORMALMAP
+  - _SPECGLOSSMAP
+  m_InvalidKeywords:
+  - _GLOSSYREFLECTIONS_OFF
+  - _METALLICGLOSSMAP
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: debdf594ea647c64ab37c1f05537e242, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 7941b3535ff753740a90dfa52c4d9586, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: debdf594ea647c64ab37c1f05537e242, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 2800000, guid: 66ccbf86147392945b5b0c619b0feb97, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 2800000, guid: 66ccbf86147392945b5b0c619b0feb97, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AddPrecomputedVelocity: 0
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _Blend: 0
+    - _BlendModePreserveSpecular: 1
+    - _BumpScale: 1
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
+    - _EnvironmentReflections: 0
+    - _GlossMapScale: 0
+    - _Glossiness: 0
+    - _GlossyReflections: 0
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.005
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _ScreenSpaceReflections: 1
+    - _ScreenSpaceReflectionsContributeTransparent: 1
+    - _Smoothness: 0
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
+    - _Surface: 0
+    - _UVSec: 0
+    - _WorkflowMode: 1
+    - _XRMotionVectorsPass: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BaseColor: {r: 1, g: 0.85, b: 0.1, a: 1}
+    - _Color: {r: 1, g: 0.85, b: 0.1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1001 &11956488
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4553,6 +4685,59 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   chaseSpeed: 3.5
+--- !u!1 &230061323
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 230061324}
+  - component: {fileID: 230061325}
+  m_Layer: 0
+  m_Name: InteractionTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &230061324
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230061323}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 295699775}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &230061325
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230061323}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.02
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &233804657
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6377,16 +6562,79 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 49dbf6b31bb07594083420a579eb1c36, type: 2}
+      objectReference: {fileID: 1167163092}
     - target: {fileID: 919132149155446097, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
       propertyPath: m_Name
       value: mesh_TrashBin (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 230061324}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 295699777}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 295699776}
   m_SourcePrefab: {fileID: 100100000, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+--- !u!1 &295699774 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+  m_PrefabInstance: {fileID: 295699773}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &295699775 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+  m_PrefabInstance: {fileID: 295699773}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &295699776
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295699774}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.006, y: 0.006, z: 0.008}
+  m_Center: {x: 0, y: 0, z: 0.004}
+--- !u!114 &295699777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295699774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdda2e46720c2c54789103d5f78507eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RecycleBin
+  acceptedCategory: 1
+  binName: "Punto Limpio - Org\xE1nicos (Verde)"
+  correctBonusPoints: 25
+  timeBonus: 6
+  incorrectPenaltyPoints: 10
+  incorrectTimePenalty: 5
+  depositParticles: {fileID: 0}
+  audioSource: {fileID: 0}
+  correctSfx: {fileID: 0}
+  incorrectSfx: {fileID: 0}
+  binColor: {r: 0.2, g: 0.85, b: 0.2, a: 1}
 --- !u!1001 &296351280
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7820,6 +8068,59 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffccc22705d9dea4da9af3336f1e9d4c, type: 3}
+--- !u!1 &395934543
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 395934544}
+  - component: {fileID: 395934545}
+  m_Layer: 0
+  m_Name: InteractionTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &395934544
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395934543}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1457252546}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &395934545
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395934543}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.02
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &398424196
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8442,12 +8743,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -8799,9 +9100,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c76b15b5bfa7374a83f363e3cf4cece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trashName: Residuo
+  category: 0
   trashType: Botella
   points: 2
   timeBonus: 5
+  educationalFact: "El pl\xE1stico tarda cientos de a\xF1os en degradarse. \xA1Sep\xE1ralo siempre!"
 --- !u!65 &455646987
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9448,9 +9752,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c76b15b5bfa7374a83f363e3cf4cece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trashName: Residuo
+  category: 0
   trashType: Papel
   points: 1
   timeBonus: 3
+  educationalFact: "El pl\xE1stico tarda cientos de a\xF1os en degradarse. \xA1Sep\xE1ralo siempre!"
 --- !u!65 &506002395
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11876,7 +12183,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &673196552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12553,9 +12860,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c76b15b5bfa7374a83f363e3cf4cece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trashName: Residuo
+  category: 0
   trashType: Bolsa
   points: 3
   timeBonus: 5
+  educationalFact: "El pl\xE1stico tarda cientos de a\xF1os en degradarse. \xA1Sep\xE1ralo siempre!"
 --- !u!65 &707732558
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17633,11 +17943,17 @@ MonoBehaviour:
   collectedTrash: 0
   totalTrash: 10
   score: 0
+  correctlyClassified: 0
+  incorrectlyClassified: 0
+  currentStreak: 0
+  highestStreak: 0
   timeRemaining: 60
   counterText: {fileID: 1233323680}
   timerText: {fileID: 1236999826}
   winPanel: {fileID: 1376432829}
   gameOverPanel: {fileID: 673196551}
+  incorrectScorePenalty: 10
+  incorrectTimePenalty: 5
 --- !u!4 &959215051
 Transform:
   m_ObjectHideFlags: 0
@@ -20651,6 +20967,138 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7237079143685941843, guid: 5df341e671159254b84b229fcbf10f66, type: 3}
   m_PrefabInstance: {fileID: 1339468986}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &1167163092
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Mat_Organico
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _ENVIRONMENTREFLECTIONS_OFF
+  - _METALLICSPECGLOSSMAP
+  - _NORMALMAP
+  - _SPECGLOSSMAP
+  m_InvalidKeywords:
+  - _GLOSSYREFLECTIONS_OFF
+  - _METALLICGLOSSMAP
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: debdf594ea647c64ab37c1f05537e242, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 7941b3535ff753740a90dfa52c4d9586, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: debdf594ea647c64ab37c1f05537e242, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 2800000, guid: 66ccbf86147392945b5b0c619b0feb97, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 2800000, guid: 66ccbf86147392945b5b0c619b0feb97, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AddPrecomputedVelocity: 0
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _Blend: 0
+    - _BlendModePreserveSpecular: 1
+    - _BumpScale: 1
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
+    - _EnvironmentReflections: 0
+    - _GlossMapScale: 0
+    - _Glossiness: 0
+    - _GlossyReflections: 0
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.005
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _ScreenSpaceReflections: 1
+    - _ScreenSpaceReflectionsContributeTransparent: 1
+    - _Smoothness: 0
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
+    - _Surface: 0
+    - _UVSec: 0
+    - _WorkflowMode: 1
+    - _XRMotionVectorsPass: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BaseColor: {r: 0.2, g: 0.85, b: 0.2, a: 1}
+    - _Color: {r: 0.2, g: 0.85, b: 0.2, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1167523763
 GameObject:
   m_ObjectHideFlags: 0
@@ -21763,7 +22211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1233323679
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21969,7 +22417,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1236999824
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24393,9 +24841,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c76b15b5bfa7374a83f363e3cf4cece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trashName: Residuo
+  category: 0
   trashType: Bolsa
   points: 3
   timeBonus: 10
+  educationalFact: "El pl\xE1stico tarda cientos de a\xF1os en degradarse. \xA1Sep\xE1ralo siempre!"
 --- !u!1001 &1346218963
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25051,7 +25502,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1376432830
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26795,7 +27246,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 49dbf6b31bb07594083420a579eb1c36, type: 2}
+      objectReference: {fileID: 9277206}
     - target: {fileID: 919132149155446097, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
       propertyPath: m_Name
       value: mesh_TrashBin
@@ -26806,9 +27257,72 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 49dbf6b31bb07594083420a579eb1c36, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 395934544}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1457252548}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1457252547}
   m_SourcePrefab: {fileID: 100100000, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+--- !u!1 &1457252545 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+  m_PrefabInstance: {fileID: 1457252544}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1457252546 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+  m_PrefabInstance: {fileID: 1457252544}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1457252547
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457252545}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.006, y: 0.006, z: 0.008}
+  m_Center: {x: 0, y: 0, z: 0.004}
+--- !u!114 &1457252548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457252545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdda2e46720c2c54789103d5f78507eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RecycleBin
+  acceptedCategory: 2
+  binName: Punto Limpio - Vidrio (Amarillo)
+  correctBonusPoints: 25
+  timeBonus: 6
+  incorrectPenaltyPoints: 10
+  incorrectTimePenalty: 5
+  depositParticles: {fileID: 0}
+  audioSource: {fileID: 0}
+  correctSfx: {fileID: 0}
+  incorrectSfx: {fileID: 0}
+  binColor: {r: 1, g: 0.85, b: 0.1, a: 1}
 --- !u!4 &1458808663 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b35ec297e0aa7ef498cb060427a62e12, type: 3}
@@ -27718,6 +28232,138 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51e5bf6a6476be2438326a42e519cdc0, type: 3}
+--- !u!21 &1496371382
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Mat_Plastico
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _ENVIRONMENTREFLECTIONS_OFF
+  - _METALLICSPECGLOSSMAP
+  - _NORMALMAP
+  - _SPECGLOSSMAP
+  m_InvalidKeywords:
+  - _GLOSSYREFLECTIONS_OFF
+  - _METALLICGLOSSMAP
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: debdf594ea647c64ab37c1f05537e242, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 7941b3535ff753740a90dfa52c4d9586, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: debdf594ea647c64ab37c1f05537e242, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 2800000, guid: 66ccbf86147392945b5b0c619b0feb97, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 2800000, guid: 66ccbf86147392945b5b0c619b0feb97, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AddPrecomputedVelocity: 0
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _Blend: 0
+    - _BlendModePreserveSpecular: 1
+    - _BumpScale: 1
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
+    - _EnvironmentReflections: 0
+    - _GlossMapScale: 0
+    - _Glossiness: 0
+    - _GlossyReflections: 0
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.005
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _ScreenSpaceReflections: 1
+    - _ScreenSpaceReflectionsContributeTransparent: 1
+    - _Smoothness: 0
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
+    - _Surface: 0
+    - _UVSec: 0
+    - _WorkflowMode: 1
+    - _XRMotionVectorsPass: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BaseColor: {r: 0.2, g: 0.6, b: 1, a: 1}
+    - _Color: {r: 0.2, g: 0.6, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1001 &1503229203
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29451,6 +30097,108 @@ Transform:
   m_Children: []
   m_Father: {fileID: 413690403}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1623931255
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1623931257}
+  - component: {fileID: 1623931256}
+  m_Layer: 0
+  m_Name: EcoMissionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1623931256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623931255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 853b514d0bca8c24bb867add5a640751, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EcoMissionManager
+  currentPurity: 25
+  purityPerCorrectDeposit: 12
+  purityPenaltyPerMistake: 6
+  purityLerpSpeed: 3
+  missions:
+  - title: "Misi\xF3n 1: Iniciativa Valledupar Limpia"
+    description: Clasifica correctamente 2 residuos en los Puntos Limpios.
+    type: 0
+    targetCategory: 0
+    targetCount: 2
+    currentProgress: 0
+    bonusPoints: 40
+    bonusTime: 12
+    isCompleted: 0
+    educationalFact: "\xA1Cada residuo cuenta! Clasificar desde la fuente reduce hasta un 80% la basura en vertederos."
+  - title: "Misi\xF3n 2: Cero Pl\xE1sticos en el Parque"
+    description: "Clasifica 2 residuos de Pl\xE1stico en la Caneca Azul."
+    type: 1
+    targetCategory: 0
+    targetCount: 2
+    currentProgress: 0
+    bonusPoints: 50
+    bonusTime: 15
+    isCompleted: 0
+    educationalFact: "Las bolsas y botellas pl\xE1sticas tardan cientos de a\xF1os en degradarse y da\xF1an la fauna."
+  - title: "Misi\xF3n 3: Vidrio Seguro"
+    description: Clasifica 1 residuo de Vidrio en la Caneca Amarilla.
+    type: 1
+    targetCategory: 2
+    targetCount: 1
+    currentProgress: 0
+    bonusPoints: 50
+    bonusTime: 15
+    isCompleted: 0
+    educationalFact: El vidrio es 100% reciclable infinitas veces sin perder calidad.
+  - title: "Misi\xF3n 4: Guardi\xE1n Disciplinado"
+    description: Consigue una racha de x3 aciertos sin equivocarte.
+    type: 2
+    targetCategory: 0
+    targetCount: 3
+    currentProgress: 0
+    bonusPoints: 80
+    bonusTime: 20
+    isCompleted: 0
+    educationalFact: "\xA1La disciplina ecol\xF3gica constante es la clave para mantener limpio Valledupar!"
+  - title: "Misi\xF3n 5: Restauraci\xF3n de la Fuente y el Parque"
+    description: Alcanza el 100% de Pureza Ambiental en el Parque de la Vida.
+    type: 3
+    targetCategory: 0
+    targetCount: 100
+    currentProgress: 0
+    bonusPoints: 150
+    bonusTime: 30
+    isCompleted: 0
+    educationalFact: "\xA1El Parque de la Vida de Valledupar est\xE1 radiante y protegido gracias a ti!"
+  activeMissionIndex: 0
+  audioSource: {fileID: 0}
+  missionCompleteSfx: {fileID: 0}
+--- !u!4 &1623931257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623931255}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1624142148 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a3270467eb28a9844b22855aea1d3ae3, type: 3}
@@ -30350,7 +31098,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 49dbf6b31bb07594083420a579eb1c36, type: 2}
+      objectReference: {fileID: 1496371382}
     - target: {fileID: 919132149155446097, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
       propertyPath: m_Name
       value: mesh_TrashBin (2)
@@ -30361,9 +31109,72 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 49dbf6b31bb07594083420a579eb1c36, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1737550007}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1699917684}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1699917683}
   m_SourcePrefab: {fileID: 100100000, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+--- !u!1 &1699917681 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+  m_PrefabInstance: {fileID: 1699917680}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1699917682 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 835f3a9f79e1f034cb507fc3b68cdb77, type: 3}
+  m_PrefabInstance: {fileID: 1699917680}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1699917683
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699917681}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.006, y: 0.006, z: 0.008}
+  m_Center: {x: 0, y: 0, z: 0.004}
+--- !u!114 &1699917684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699917681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdda2e46720c2c54789103d5f78507eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RecycleBin
+  acceptedCategory: 0
+  binName: "Punto Limpio - Pl\xE1sticos (Azul)"
+  correctBonusPoints: 25
+  timeBonus: 6
+  incorrectPenaltyPoints: 10
+  incorrectTimePenalty: 5
+  depositParticles: {fileID: 0}
+  audioSource: {fileID: 0}
+  correctSfx: {fileID: 0}
+  incorrectSfx: {fileID: 0}
+  binColor: {r: 0.2, g: 0.6, b: 1, a: 1}
 --- !u!4 &1699936777 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4525472cbde143643bf81ab9935ad1bd, type: 3}
@@ -30991,6 +31802,59 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1d27171321ea574a825f392c3f47e55, type: 3}
+--- !u!1 &1737550006
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1737550007}
+  - component: {fileID: 1737550008}
+  m_Layer: 0
+  m_Name: InteractionTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1737550007
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737550006}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1699917682}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1737550008
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737550006}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.02
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1745467789
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37764,7 +38628,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2101594577
 RectTransform:
   m_ObjectHideFlags: 0
@@ -39138,6 +40002,7 @@ GameObject:
   - component: {fileID: 5866666020331601310}
   - component: {fileID: 5866666020331601309}
   - component: {fileID: 5866666020331601308}
+  - component: {fileID: 5866666020331601315}
   m_Layer: 0
   m_Name: The Boss
   m_TagString: Player
@@ -40967,7 +41832,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: ad14718a5816e01479797f9e8fda9eab, type: 3}
   m_Controller: {fileID: 9100000, guid: b9fea5f79cf20ce48b683ac83d111b4b, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
@@ -41110,6 +41975,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 2
+--- !u!114 &5866666020331601315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132147518127451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 394ea310c918dee4daccb307f24b7b37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
+  maxCapacity: 3
+  carriedItems: []
+  selectedIndex: 0
 --- !u!1 &5886835370535097028
 GameObject:
   m_ObjectHideFlags: 0
@@ -43011,3 +43891,4 @@ SceneRoots:
   - {fileID: 1982859301}
   - {fileID: 1190790572}
   - {fileID: 413690403}
+  - {fileID: 1623931257}

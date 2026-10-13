@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,8 +30,6 @@ public class Wearable : ScriptableObject
     #region Properties and Fields
 
     public Guid Id { get { return _id; } }
-
-    [SerializeField]
     private Guid _id;
 
     // Se eliminó [SerializeField] de aquí ya que es una propiedad getter
