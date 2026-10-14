@@ -4,8 +4,8 @@ using UnityEngine;
 public class RecycleBin : MonoBehaviour
 {
     [Header("Configuración de Caneca")]
-    public TrashCategory acceptedCategory = TrashCategory.Plastico;
-    public string binName = "Caneca de Plásticos";
+    public TrashCategory acceptedCategory = TrashCategory.Aprovechables;
+    public string binName = "Caneca de Aprovechables";
 
     [Header("Recompensas y Penalizaciones")]
     public int correctBonusPoints = 20;
@@ -47,18 +47,18 @@ public class RecycleBin : MonoBehaviour
         {
             switch (acceptedCategory)
             {
-                case TrashCategory.Plastico: 
-                    binName = "Punto Limpio - Plásticos (Azul)"; 
+                case TrashCategory.Aprovechables: 
+                    binName = "Punto Limpio - Aprovechables (Blanco)"; 
                     binColor = new Color(0.2f, 0.6f, 1f);
                     break;
                 case TrashCategory.Organico: 
                     binName = "Punto Limpio - Orgánicos (Verde)"; 
                     binColor = new Color(0.2f, 0.85f, 0.2f);
                     break;
-                case TrashCategory.Vidrio: 
-                    binName = "Punto Limpio - Vidrio (Amarillo)"; 
-                    binColor = new Color(1f, 0.85f, 0.1f);
-                    break;
+                //case TrashCategory.Vidrio: 
+                //    binName = "Punto Limpio - Vidrio (Amarillo)"; 
+                //    binColor = new Color(1f, 0.85f, 0.1f);
+                //    break;
                 case TrashCategory.NoAprovechable: 
                     binName = "Punto Limpio - No Aprovechable (Negro)"; 
                     binColor = new Color(0.3f, 0.3f, 0.3f);
@@ -399,9 +399,8 @@ public class RecycleBin : MonoBehaviour
     {
         switch (acceptedCategory)
         {
-            case TrashCategory.Plastico: return "Plástico";
+            case TrashCategory.Aprovechables: return "Aprovechables";
             case TrashCategory.Organico: return "Orgánico";
-            case TrashCategory.Vidrio: return "Vidrio";
             case TrashCategory.NoAprovechable: return "No Aprovechable";
             default: return "General";
         }

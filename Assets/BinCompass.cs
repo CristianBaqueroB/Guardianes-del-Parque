@@ -2,25 +2,25 @@
 using UnityEngine;
 
 /// <summary>
-/// Mini-brujula de canecas: muestra flechas en pantalla indicando la direccion y distancia
+/// Mini-brújula de canecas: muestra flechas en pantalla indicando la dirección y distancia
 /// a cada Punto Limpio (RecycleBin) cuando el jugador tiene la mochila llena o necesita depositar.
-/// Se dibuja via OnGUI para maxima compatibilidad sin depender de Canvas.
+/// Se dibuja vía OnGUI para máxima compatibilidad sin depender de Canvas.
 /// </summary>
 public class BinCompass : MonoBehaviour
 {
     public static BinCompass Instance { get; private set; }
 
-    [Header("Configuracion de Brujula")]
-    [Tooltip("Siempre mostrar la brujula (si false, solo cuando mochila tiene items)")]
+    [Header("Configuración de Brújula")]
+    [Tooltip("Siempre mostrar la brújula (si false, solo cuando mochila tiene ítems)")]
     public bool alwaysShow = false;
 
-    [Tooltip("Radio del circulo de la brujula en pantalla (px)")]
+    [Tooltip("Radio del círculo de la brújula en pantalla (px)")]
     public float compassRadius = 72f;
 
-    [Tooltip("Posicion X del centro de la brujula (desde derecha)")]
+    [Tooltip("Posición X del centro de la brújula (desde derecha)")]
     public float rightMargin = 120f;
 
-    [Tooltip("Posicion Y del centro de la brujula (desde arriba)")]
+    [Tooltip("Posición Y del centro de la brújula (desde arriba)")]
     public float topMargin = 200f;
 
     // Estado interno
@@ -214,9 +214,8 @@ public class BinCompass : MonoBehaviour
     {
         switch (cat)
         {
-            case TrashCategory.Plastico: return "Plas";
+            case TrashCategory.Aprovechables: return "Aprov";
             case TrashCategory.Organico: return "Org";
-            case TrashCategory.Vidrio: return "Vid";
             case TrashCategory.NoAprovechable: return "N/A";
             default: return "?";
         }

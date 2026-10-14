@@ -27,7 +27,6 @@ Material:
   m_ValidKeywords:
   - _ALPHATEST_ON
   - _ENVIRONMENTREFLECTIONS_OFF
-  - _NORMALMAP
   - _SPECULAR_SETUP
   m_InvalidKeywords:
   - _GLOSSYREFLECTIONS_OFF
@@ -48,11 +47,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 1b8ae7bf91d85004e823507d0a14306f, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 4f5496608b0d1f5498f6212588ae7229, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -72,7 +71,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 1b8ae7bf91d85004e823507d0a14306f, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -144,8 +143,8 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.9811321, g: 0.93948025, b: 0.93948025, a: 1}
-    - _Color: {r: 0.9811321, g: 0.93948025, b: 0.93948025, a: 1}
+    - _BaseColor: {r: 0, g: 0.4339623, b: 0.005930181, a: 1}
+    - _Color: {r: 0, g: 0.4339623, b: 0.005930181, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}

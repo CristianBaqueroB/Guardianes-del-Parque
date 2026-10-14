@@ -6,7 +6,7 @@ using UnityEngine;
 public enum EcoMissionType
 {
     DepositAnyTrash,      // Clasificar X residuos correctamente
-    DepositCategory,      // Clasificar X residuos de una categoría específica (Plástico, Orgánico, Vidrio)
+    DepositCategory,      // Clasificar X residuos de una categoría específica (Aprovechables, Orgánico, NoAprovechable)
     ReachStreak,          // Alcanzar una racha de aciertos consecutivos
     ReachEcoPurity,       // Alcanzar cierto porcentaje de pureza
     CollectAnyTrash       // Recoger X residuos del suelo
@@ -119,25 +119,25 @@ public class EcoMissionManager : MonoBehaviour
             },
             new EcoMission
             {
-                title = "Misión 2: Cero Plásticos en el Parque",
-                description = "Clasifica 2 residuos de Plástico en la Caneca Azul.",
+                title = "Misión 2: Aprovechando los Materiales",
+                description = "Clasifica 2 residuos en la Caneca de Aprovechables.",
                 type = EcoMissionType.DepositCategory,
-                targetCategory = TrashCategory.Plastico,
+                targetCategory = TrashCategory.Aprovechables,
                 targetCount = 2,
                 bonusPoints = 50,
                 bonusTime = 15f,
-                educationalFact = "Las bolsas y botellas plásticas tardan cientos de años en degradarse y dañan la fauna."
+                educationalFact = "El plástico, el vidrio y el cartón se pueden reciclar y transformar para darles una nueva vida útil."
             },
             new EcoMission
             {
-                title = "Misión 3: Vidrio Seguro",
-                description = "Clasifica 1 residuo de Vidrio en la Caneca Amarilla.",
+                title = "Misión 3: Nutriendo el Parque",
+                description = "Clasifica 1 residuo en la Caneca de Orgánicos.",
                 type = EcoMissionType.DepositCategory,
-                targetCategory = TrashCategory.Vidrio,
+                targetCategory = TrashCategory.Organico,
                 targetCount = 1,
                 bonusPoints = 50,
                 bonusTime = 15f,
-                educationalFact = "El vidrio es 100% reciclable infinitas veces sin perder calidad."
+                educationalFact = "Los residuos orgánicos se convierten en abono natural ideal para mantener verdes los jardines del Parque de la Vida."
             },
             new EcoMission
             {

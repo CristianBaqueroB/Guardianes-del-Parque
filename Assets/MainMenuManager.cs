@@ -222,14 +222,12 @@ public class MainMenuManager : MonoBehaviour
                 GUILayout.Label("CLASIFICACION DE RESIDUOS", new GUIStyle(bodyStyle) { fontSize = 16, fontStyle = FontStyle.Bold, normal = { textColor = new Color(0.4f, 0.8f, 1f) } }, GUILayout.Height(24));
                 GUILayout.Space(4);
                 GUILayout.Label(
-                    "[P] Caneca AZUL        - Plasticos\n" +
-                    "     Botellas, bolsas, empaques de plastico\n\n" +
-                    "[O] Caneca VERDE      - Organicos\n" +
-                    "     Residuos de comida, cascara, materia vegetal\n\n" +
-                    "[V] Caneca AMARILLA - Vidrio\n" +
-                    "     Botellas de vidrio, frascos de cristal\n\n" +
-                    "[N] Caneca GRIS         - No aprovechable\n" +
-                    "     Pilas, medicamentos, residuos mezclados\n\n" +
+                    "[A] Caneca BLANCA        - Aprovechables\n" +
+                    "     Botellas plásticas, bolsas plásticas, vidrio y latas\n\n" +
+                    "[O] Caneca VERDE      - Orgánicos\n" +
+                    "     Residuos de comida, cáscaras, materia vegetal\n\n" +
+                    "[N] Caneca GRIS         - No Aprovechable\n" +
+                    "     Pilas, medicamentos, colillas, residuos mezclados\n\n" +
                     "Cada acierto da puntos y tiempo extra.\n" +
                     "Un error resta puntos y tiempo.", bodyStyle, GUILayout.Height(200));
                 break;

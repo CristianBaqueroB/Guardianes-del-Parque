@@ -185,49 +185,48 @@ public class RandomTrashGenerator : MonoBehaviour
     {
         string lower = objName.ToLower();
 
-        // --- Plasticos ---
+        // --- Aprovechables (Plástico, Vidrio, Latas, Bolsas, Botellas) ---
         if (lower.Contains("bag") || lower.Contains("bolsa"))
         {
-            data.category = TrashCategory.Plastico;
-            data.trashName = "Bolsa de Plastico";
+            data.category = TrashCategory.Aprovechables;
+            data.trashName = "Bolsa de Plástico";
             data.points = 10;
             data.timeBonus = 4f;
-            data.educationalFact = "Las bolsas plasticas tardan hasta 500 anos en degradarse. En el Parque de la Vida bloquean el drenaje y afectan la fauna.";
+            data.educationalFact = "Las bolsas plásticas tardan hasta 500 años en degradarse. En el Parque de la Vida bloquean el drenaje y afectan la fauna.";
         }
         else if (lower.Contains("watter") || lower.Contains("water") || lower.Contains("plastic") || lower.Contains("bottle"))
         {
-            data.category = TrashCategory.Plastico;
-            data.trashName = "Botella Plastica";
+            data.category = TrashCategory.Aprovechables;
+            data.trashName = "Botella Plástica";
             data.points = 12;
             data.timeBonus = 4f;
-            data.educationalFact = "Colombia genera mas de 2 millones de toneladas de plastico al ano. Reciclar una botella ahorra energia suficiente para encender un bombillo por 6 horas.";
+            data.educationalFact = "Colombia genera más de 2 millones de toneladas de plástico al año. Reciclar una botella ahorra energía suficiente para encender un bombillo por 6 horas.";
         }
         else if (lower.Contains("straw") || lower.Contains("paja") || lower.Contains("pitillo"))
         {
-            data.category = TrashCategory.Plastico;
-            data.trashName = "Pitillo Plastico";
+            data.category = TrashCategory.Aprovechables;
+            data.trashName = "Pitillo Plástico";
             data.points = 8;
             data.timeBonus = 3f;
-            data.educationalFact = "Los pitillos son uno de los residuos que mas dano causan a aves y peces. Valledupar impulsa el uso de pitillos de bambu o papel.";
+            data.educationalFact = "Los pitillos son uno de los residuos que más daño causan a aves y peces. Valledupar impulsa el uso de pitillos de bambú o papel.";
         }
-        // --- Vidrio ---
         else if (lower.Contains("soda") || lower.Contains("vidrio") || lower.Contains("glass") || lower.Contains("jar"))
         {
-            data.category = TrashCategory.Vidrio;
+            data.category = TrashCategory.Aprovechables;
             data.trashName = "Botella de Vidrio";
             data.points = 15;
             data.timeBonus = 5f;
-            data.educationalFact = "El vidrio es 100% reciclable infinitas veces sin perder calidad. Un frasco de vidrio reciclado ahorra suficiente energia para calentar agua por 30 minutos.";
+            data.educationalFact = "El vidrio es 100% reciclable infinitas veces sin perder calidad. Un frasco de vidrio reciclado ahorra suficiente energía para calentar agua por 30 minutos.";
         }
-        // --- Organicos ---
+        // --- Orgánicos ---
         else if (lower.Contains("pile") || lower.Contains("food") || lower.Contains("organ") || lower.Contains("cascara") || lower.Contains("fruit"))
         {
-            string[] organicItems = { "Cascara de Fruta", "Residuo de Comida", "Desecho Organico", "Hoja Seca" };
+            string[] organicItems = { "Cáscara de Fruta", "Residuo de Comida", "Desecho Orgánico", "Hoja Seca" };
             string[] organicFacts = {
-                "Los residuos organicos se convierten en abono (compost) que nutre la vegetacion del Parque de la Vida.",
-                "El 60% de los residuos domesticos en Valledupar son organicos. Separarlos reduce drasticamente los vertederos.",
-                "El compost organico mejora hasta un 30% la capacidad del suelo para retener agua, vital en el calido clima de Valledupar.",
-                "Las hojas y ramas compostadas alimentan los suelos de los 160 especies de arboles del Parque de la Vida."
+                "Los residuos orgánicos se convierten en abono (compost) que nutre la vegetación del Parque de la Vida.",
+                "El 60% de los residuos domésticos en Valledupar son orgánicos. Separarlos reduce drásticamente los vertederos.",
+                "El compost orgánico mejora hasta un 30% la capacidad del suelo para retener agua, vital en el cálido clima de Valledupar.",
+                "Las hojas y ramas compostadas alimentan los suelos de las 160 especies de árboles del Parque de la Vida."
             };
             int idx = Random.Range(0, organicItems.Length);
             data.category = TrashCategory.Organico;
@@ -243,7 +242,7 @@ public class RandomTrashGenerator : MonoBehaviour
             data.trashName = "Pila Usada";
             data.points = 20;
             data.timeBonus = 7f;
-            data.educationalFact = "Una sola pila contamina hasta 600 litros de agua subterranea. En Valledupar existen puntos de acopio especiales para pilas y baterias.";
+            data.educationalFact = "Una sola pila contamina hasta 600 litros de agua subterránea. En Valledupar existen puntos de acopio especiales para pilas y baterías.";
         }
         else if (lower.Contains("medicine") || lower.Contains("medic") || lower.Contains("pill"))
         {
@@ -251,7 +250,7 @@ public class RandomTrashGenerator : MonoBehaviour
             data.trashName = "Medicamento Vencido";
             data.points = 20;
             data.timeBonus = 7f;
-            data.educationalFact = "Los medicamentos vencidos no deben tirarse a la basura normal. Las farmacias de Valledupar tienen puntos de recoleccion RESPEL.";
+            data.educationalFact = "Los medicamentos vencidos no deben tirarse a la basura normal. Las farmacias de Valledupar tienen puntos de recolección RESPEL.";
         }
         else if (lower.Contains("can") || lower.Contains("lata") || lower.Contains("metal"))
         {
@@ -259,7 +258,7 @@ public class RandomTrashGenerator : MonoBehaviour
             data.trashName = "Lata de Aluminio";
             data.points = 15;
             data.timeBonus = 5f;
-            data.educationalFact = "El aluminio puede reciclarse indefinidamente. Reciclar una lata ahorra 95% de la energia que se usaria para fabricar una nueva.";
+            data.educationalFact = "El aluminio puede reciclarse indefinidamente. Reciclar una lata ahorra 95% de la energía que se usaría para fabricar una nueva.";
         }
         else if (lower.Contains("cigarette") || lower.Contains("colilla") || lower.Contains("cigarro"))
         {
@@ -267,38 +266,32 @@ public class RandomTrashGenerator : MonoBehaviour
             data.trashName = "Colilla de Cigarrillo";
             data.points = 12;
             data.timeBonus = 4f;
-            data.educationalFact = "Las colillas son el residuo mas recogido en playas y parques. Contienen hasta 7.000 sustancias toxicas que contaminan el suelo y el agua.";
+            data.educationalFact = "Las colillas son el residuo más recogido en playas y parques. Contienen hasta 7.000 sustancias tóxicas que contaminan el suelo y el agua.";
         }
         // --- Default ---
         else
         {
-            // Seleccionar aleatoriamente entre varios tipos genericos
-            int pick = Random.Range(0, 4);
+            // Seleccionar aleatoriamente entre las tres categorías actuales
+            int pick = Random.Range(0, 3);
             switch (pick)
             {
                 case 0:
-                    data.category = TrashCategory.Plastico;
-                    data.trashName = "Empaque Plastico";
+                    data.category = TrashCategory.Aprovechables;
+                    data.trashName = "Empaque Reciclable";
                     data.points = 10; data.timeBonus = 4f;
-                    data.educationalFact = "Clasifica los plasticos en la Caneca Azul. El Parque de la Vida merece estar libre de residuos.";
+                    data.educationalFact = "Clasifica los empaques aprovechables en su punto limpio. El Parque de la Vida merece estar libre de residuos.";
                     break;
                 case 1:
                     data.category = TrashCategory.Organico;
-                    data.trashName = "Residuo Organico";
+                    data.trashName = "Residuo Orgánico";
                     data.points = 8; data.timeBonus = 3f;
-                    data.educationalFact = "Los organicos en la caneca verde se convierten en abono para los jardines del parque.";
-                    break;
-                case 2:
-                    data.category = TrashCategory.Vidrio;
-                    data.trashName = "Fragmento de Vidrio";
-                    data.points = 12; data.timeBonus = 4f;
-                    data.educationalFact = "El vidrio roto en el parque es peligroso para personas, ninos y animales. Separa y recicla.";
+                    data.educationalFact = "Los orgánicos en la caneca correspondiente se convierten en abono para los jardines del parque.";
                     break;
                 default:
                     data.category = TrashCategory.NoAprovechable;
-                    data.trashName = "Residuo Mezclado";
+                    data.trashName = "Residuo No Aprovechable";
                     data.points = 10; data.timeBonus = 4f;
-                    data.educationalFact = "Los residuos no aprovechables deben ir a la caneca gris. No mezcles con organicos ni plasticos.";
+                    data.educationalFact = "Los residuos no aprovechables deben ir a su contenedor especial. No los mezcles con materiales reciclables.";
                     break;
             }
         }
@@ -306,14 +299,14 @@ public class RandomTrashGenerator : MonoBehaviour
 
     /// <summary>
     /// Crea un marcador visual sobre el residuo:
-    /// - Columna de particulas de color flotante (muy visible en el pasto)
-    /// - TextMesh con inicial de categoria como respaldo
+    /// - Columna de partículas de color flotante (muy visible en el pasto)
+    /// - TextMesh con inicial de categoría como respaldo
     /// </summary>
     private void CreateTrashGlowMarker(GameObject trash, TrashData data)
     {
         Color catColor = data.GetCategoryColor();
 
-        // 1. Sistema de particulas de columna luminosa
+        // 1. Sistema de partículas de columna luminosa
         GameObject psObj = new GameObject("TrashGlowParticles");
         psObj.transform.SetParent(trash.transform);
         psObj.transform.localPosition = new Vector3(0, 0.3f, 0);
@@ -355,7 +348,7 @@ public class RandomTrashGenerator : MonoBehaviour
 
         ps.Play();
 
-        // 2. Etiqueta de categoria (inicial) siempre orientada a la camara
+        // 2. Etiqueta de categoría (inicial) siempre orientada a la cámara
         GameObject markerObj = new GameObject("CategoryMarker");
         markerObj.transform.SetParent(trash.transform);
         markerObj.transform.localPosition = new Vector3(0, 0.55f, 0);
@@ -375,9 +368,8 @@ public class RandomTrashGenerator : MonoBehaviour
     {
         switch (cat)
         {
-            case TrashCategory.Plastico: return "[P]";
+            case TrashCategory.Aprovechables: return "[A]";
             case TrashCategory.Organico: return "[O]";
-            case TrashCategory.Vidrio: return "[V]";
             case TrashCategory.NoAprovechable: return "[N]";
             default: return "[?]";
         }

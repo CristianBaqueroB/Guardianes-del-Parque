@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 // MoveBehaviour inherits from GenericBehaviour. This class corresponds to basic walk and run behaviour, it is the default behaviour.
@@ -76,33 +76,61 @@ public class MoveBehaviour : GenericBehaviour
         // Start a new jump.
         if (jump && !behaviourManager.GetAnim.GetBool(jumpBool) && behaviourManager.IsGrounded())
         {
+            jump = false;
+
             // Set jump related parameters.
             behaviourManager.LockTempBehaviour(this.behaviourCode);
             behaviourManager.GetAnim.SetBool(jumpBool, true);
-            // Is a locomotion jump?
-            if (behaviourManager.GetAnim.GetFloat(speedFloat) > 0.1)
+            behaviourManager.GetAnim.SetBool(groundedBool, false);
+
+            // Temporarily change player friction to pass through obstacles.
+            GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
+            GetComponent<CapsuleCollider>().material.staticFriction = 0f;
+
+            // Set jump vertical impulse velocity.
+            float jumpVelY = Mathf.Sqrt(2f * Mathf.Abs(Physics.gravity.y) * jumpHeight);
+
+            // Preservar la inercia horizontal natural según la velocidad y dirección actual
+            Vector3 horizontalVelocity = Vector3.zero;
+            if (speed > 0.1f)
             {
-                // Temporarily change player friction to pass through obstacles.
-                GetComponent<CapsuleCollider>().material.dynamicFriction = 0f;
-                GetComponent<CapsuleCollider>().material.staticFriction = 0f;
-                // Remove vertical velocity to avoid "super jumps" on slope ends.
-                RemoveVerticalVelocity();
-                // Set jump vertical impulse velocity.
-                float velocity = 2f * Mathf.Abs(Physics.gravity.y) * jumpHeight;
-                velocity = Mathf.Sqrt(velocity);
-                behaviourManager.GetRigidBody.AddForce(Vector3.up * velocity, ForceMode.VelocityChange);
+                horizontalVelocity = transform.forward * speed;
             }
+
+            // Asignar velocidad inicial limpia al Rigidbody (sin aceleraciones continuas descontroladas)
+            behaviourManager.GetRigidBody.linearVelocity = new Vector3(horizontalVelocity.x, jumpVelY, horizontalVelocity.z);
         }
         // Is already jumping?
         else if (behaviourManager.GetAnim.GetBool(jumpBool))
         {
-            // Keep forward movement while in the air.
-            if (!behaviourManager.IsGrounded() && !isColliding && behaviourManager.GetTempLockStatus())
+            // Control en el aire suave y acotado a la velocidad máxima permitida
+            if (!behaviourManager.IsGrounded() && !isColliding)
             {
-                behaviourManager.GetRigidBody.AddForce(transform.forward * (jumpInertialForce * Physics.gravity.magnitude * sprintSpeed), ForceMode.Acceleration);
+                Vector2 dir = new Vector2(behaviourManager.GetH, behaviourManager.GetV);
+                float maxAirSpeed = behaviourManager.IsSprinting() ? sprintSpeed : runSpeed;
+
+                if (dir.sqrMagnitude > 0.01f)
+                {
+                    Vector3 targetDir = Rotating(behaviourManager.GetH, behaviourManager.GetV);
+                    Vector3 targetHoriz = targetDir * maxAirSpeed;
+                    Vector3 curVel = behaviourManager.GetRigidBody.linearVelocity;
+                    Vector3 curHoriz = new Vector3(curVel.x, 0, curVel.z);
+
+                    // Ajuste de trayectoria en el aire sin propulsión infinita
+                    Vector3 newHoriz = Vector3.MoveTowards(curHoriz, targetHoriz, maxAirSpeed * 3f * Time.deltaTime);
+                    behaviourManager.GetRigidBody.linearVelocity = new Vector3(newHoriz.x, curVel.y, newHoriz.z);
+                }
+                else
+                {
+                    // Asegurar que la velocidad horizontal nunca exceda la velocidad de sprint
+                    Vector3 curVel = behaviourManager.GetRigidBody.linearVelocity;
+                    Vector3 curHoriz = Vector3.ClampMagnitude(new Vector3(curVel.x, 0, curVel.z), maxAirSpeed);
+                    behaviourManager.GetRigidBody.linearVelocity = new Vector3(curHoriz.x, curVel.y, curHoriz.z);
+                }
             }
-            // Has landed?
-            if ((behaviourManager.GetRigidBody.linearVelocity.y < 0) && behaviourManager.IsGrounded())
+
+            // Has landed? (solo cuando comienza a descender o toca el suelo)
+            if ((behaviourManager.GetRigidBody.linearVelocity.y <= 0f) && behaviourManager.IsGrounded())
             {
                 behaviourManager.GetAnim.SetBool(groundedBool, true);
                 // Change back player friction to default.

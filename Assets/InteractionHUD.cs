@@ -163,13 +163,12 @@ public class InteractionHUD : MonoBehaviour
             string categoryColor = "#FFFFFF";
             switch (item.category)
             {
-                case TrashCategory.Plastico: categoryColor = "#66B2FF"; break; // Azul
-                case TrashCategory.Organico: categoryColor = "#70E000"; break; // Verde
-                case TrashCategory.Vidrio: categoryColor = "#FFD166"; break;   // Amarillo
-                case TrashCategory.NoAprovechable: categoryColor = "#CCCCCC"; break;
+                case TrashCategory.Aprovechables: categoryColor = "#3399FF"; break; // Azul
+                case TrashCategory.Organico: categoryColor = "#70E000"; break;     // Verde
+                case TrashCategory.NoAprovechable: categoryColor = "#999999"; break; // Gris
             }
 
-            string pointer = isSelected ? "<color=#FFE600>▶</color> " : "   ";
+            string pointer = isSelected ? "<color=#FFE600>▶</color> " : "    ";
             string activeTag = isSelected ? " <color=#FFE600>[EN MANO]</color>" : "";
             result += $"{pointer}• <color={categoryColor}><b>{item.name}</b></color>{activeTag}\n";
         }
@@ -286,7 +285,7 @@ public class InteractionHUD : MonoBehaviour
                 {
                     var item = cachedInventory.Items[i];
                     bool isSelected = (i == cachedInventory.SelectedIndex);
-                    string selTag = isSelected ? "▶ " : "   ";
+                    string selTag = isSelected ? "▶ " : "    ";
                     string handTag = isSelected ? " [EN MANO]" : "";
                     invContent += $"{selTag}• {item.name} [{item.category}]{handTag}\n";
                 }

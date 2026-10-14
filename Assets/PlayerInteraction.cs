@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerInteraction : MonoBehaviour
 {
     private PlayerInventory inventory;
+    private Animator anim;
 
     private TrashData currentTrash = null;
     private RecycleBin currentBin = null;
@@ -14,6 +15,12 @@ public class PlayerInteraction : MonoBehaviour
         if (inventory == null)
         {
             inventory = gameObject.AddComponent<PlayerInventory>();
+        }
+
+        anim = GetComponent<Animator>();
+        if (anim == null)
+        {
+            anim = GetComponentInChildren<Animator>();
         }
 
         // Asegura que exista el HUD en la escena automaticamente
@@ -159,6 +166,11 @@ public class PlayerInteraction : MonoBehaviour
                 InteractionHUD.Instance.ShowNotification("¡Mochila llena! Lleva los residuos al Punto Limpio.", null, false, 3f);
             }
             return;
+        }
+
+        if (anim != null)
+        {
+            anim.SetTrigger("PickUp");
         }
 
         TrashData trashToCollect = currentTrash;

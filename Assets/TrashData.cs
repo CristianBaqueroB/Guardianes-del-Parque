@@ -2,9 +2,8 @@ using UnityEngine;
 
 public enum TrashCategory
 {
-    Plastico,
+    Aprovechables,
     Organico,
-    Vidrio,
     NoAprovechable
 }
 
@@ -12,7 +11,7 @@ public class TrashData : MonoBehaviour
 {
     [Header("Identificación")]
     public string trashName = "Residuo";
-    public TrashCategory category = TrashCategory.Plastico;
+    public TrashCategory category = TrashCategory.Aprovechables;
 
     // Campo heredado para retrocompatibilidad
     [HideInInspector]
@@ -24,12 +23,12 @@ public class TrashData : MonoBehaviour
 
     [Header("Dato Pedagógico (Valledupar Limpia)")]
     [TextArea(2, 4)]
-    public string educationalFact = "El plástico tarda cientos de años en degradarse. ¡Sepáralo siempre!";
+    public string educationalFact = "Separar los residuos correctamente ayuda a conservar el Parque de la Vida.";
 
     private void Awake()
     {
         // Migración automática si venía configurado como string en escenas anteriores
-        if (!string.IsNullOrEmpty(trashType) && category == TrashCategory.Plastico)
+        if (!string.IsNullOrEmpty(trashType))
         {
             string lower = trashType.ToLower();
             if (lower.Contains("organ") || lower.Contains("comida") || lower.Contains("cascara"))
@@ -37,43 +36,38 @@ public class TrashData : MonoBehaviour
                 category = TrashCategory.Organico;
                 if (trashName == "Residuo") trashName = "Desecho Orgánico";
             }
-            else if (lower.Contains("vidrio") || lower.Contains("cristal"))
+            else if (lower.Contains("pila") || lower.Contains("bateria") || lower.Contains("medicin") || lower.Contains("colilla"))
             {
-                category = TrashCategory.Vidrio;
-                if (trashName == "Residuo") trashName = "Botella de Vidrio";
+                category = TrashCategory.NoAprovechable;
+                if (trashName == "Residuo") trashName = "Residuo No Aprovechable";
             }
-            else if (lower.Contains("bolsa") || lower.Contains("botella") || lower.Contains("plast"))
+            else
             {
-                category = TrashCategory.Plastico;
+                category = TrashCategory.Aprovechables;
                 if (trashName == "Residuo") trashName = trashType;
             }
         }
         else if (trashName == "Residuo")
         {
-            // Asigna un nombre amigable por defecto según el gameObject
+            // Asigna un nombre y categoría por defecto según el gameObject
             string goName = gameObject.name.ToLower();
-            if (goName.Contains("bottle") || goName.Contains("botella"))
+            if (goName.Contains("bottle") || goName.Contains("botella") || goName.Contains("bag") || goName.Contains("bolsa") || goName.Contains("soda") || goName.Contains("vidrio") || goName.Contains("can") || goName.Contains("lata"))
             {
-                if (goName.Contains("soda") || goName.Contains("vidrio"))
-                {
-                    category = TrashCategory.Vidrio;
-                    trashName = "Botella de Vidrio";
-                }
-                else
-                {
-                    category = TrashCategory.Plastico;
-                    trashName = "Botella Plástica";
-                }
+                category = TrashCategory.Aprovechables;
+                if (goName.Contains("vidrio") || goName.Contains("soda")) trashName = "Botella de Vidrio";
+                else if (goName.Contains("bag") || goName.Contains("bolsa")) trashName = "Bolsa de Plástico";
+                else if (goName.Contains("can") || goName.Contains("lata")) trashName = "Lata de Aluminio";
+                else trashName = "Botella Plástica";
             }
-            else if (goName.Contains("bag") || goName.Contains("bolsa"))
-            {
-                category = TrashCategory.Plastico;
-                trashName = "Bolsa de Plástico";
-            }
-            else if (goName.Contains("pile"))
+            else if (goName.Contains("pile") || goName.Contains("food") || goName.Contains("organ"))
             {
                 category = TrashCategory.Organico;
                 trashName = "Desechos Orgánicos";
+            }
+            else if (goName.Contains("battery") || goName.Contains("pila") || goName.Contains("cigarette") || goName.Contains("colilla"))
+            {
+                category = TrashCategory.NoAprovechable;
+                trashName = "Residuo No Aprovechable";
             }
         }
     }
@@ -82,9 +76,8 @@ public class TrashData : MonoBehaviour
     {
         switch (category)
         {
-            case TrashCategory.Plastico: return "Plástico";
+            case TrashCategory.Aprovechables: return "Aprovechables";
             case TrashCategory.Organico: return "Orgánico";
-            case TrashCategory.Vidrio: return "Vidrio";
             case TrashCategory.NoAprovechable: return "No Aprovechable";
             default: return "General";
         }
@@ -94,10 +87,9 @@ public class TrashData : MonoBehaviour
     {
         switch (category)
         {
-            case TrashCategory.Plastico: return new Color(0.2f, 0.6f, 1f);     // Azul brillante
-            case TrashCategory.Organico: return new Color(0.2f, 0.8f, 0.2f);    // Verde
-            case TrashCategory.Vidrio: return new Color(0.9f, 0.9f, 0.3f);      // Amarillo
-            case TrashCategory.NoAprovechable: return new Color(0.4f, 0.4f, 0.4f); // Gris oscuro
+            case TrashCategory.Aprovechables: return new Color(0.2f, 0.6f, 1f);  // Azul (Aprovechables)
+            case TrashCategory.Organico: return new Color(0.2f, 0.8f, 0.2f);     // Verde (Orgánico)
+            case TrashCategory.NoAprovechable: return new Color(0.4f, 0.4f, 0.4f); // Gris (No Aprovechable)
             default: return Color.white;
         }
     }
