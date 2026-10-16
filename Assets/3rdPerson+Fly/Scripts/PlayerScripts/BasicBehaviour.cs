@@ -60,36 +60,48 @@ public class BasicBehaviour : MonoBehaviour
 		colExtents = GetComponent<Collider>().bounds.extents;
 	}
 
-	void Update()
-	{
-		// Store the input axes.
-		h = Input.GetAxis("Horizontal");
-		v = Input.GetAxis("Vertical");
+    void Update()
+    {
+        // --- NUEVO: CONGELAR CÁMARA Y CONTROLES EN PAUSA ---
+        if (GameManager.instance != null && GameManager.instance.isPaused)
+        {
+            if (camScript != null) camScript.enabled = false; // Apaga el script de la cámara
+            return; // Detiene la lectura de teclado y ratón
+        }
+        else
+        {
+            if (camScript != null) camScript.enabled = true; // Enciende la cámara al reanudar
+        }
+        // ---------------------------------------------------
 
-		// Set the input axes on the Animator Controller.
-		anim.SetFloat(hFloat, h, 0.1f, Time.deltaTime);
-		anim.SetFloat(vFloat, v, 0.1f, Time.deltaTime);
+        // Store the input axes.
+        h = Input.GetAxis("Horizontal");
+        v = Input.GetAxis("Vertical");
 
-		// Toggle sprint by input.
-		sprint = Input.GetButton (sprintButton);
+        // Set the input axes on the Animator Controller.
+        anim.SetFloat(hFloat, h, 0.1f, Time.deltaTime);
+        anim.SetFloat(vFloat, v, 0.1f, Time.deltaTime);
 
-		// Set the correct camera FOV for sprint mode.
-		if(IsSprinting())
-		{
-			changedFOV = true;
-			camScript.SetFOV(sprintFOV);
-		}
-		else if(changedFOV)
-		{
-			camScript.ResetFOV();
-			changedFOV = false;
-		}
-		// Set the grounded test on the Animator Controller.
-		anim.SetBool(groundedBool, IsGrounded());
-	}
+        // Toggle sprint by input.
+        sprint = Input.GetButton(sprintButton);
 
-	// Call the FixedUpdate functions of the active or overriding behaviours.
-	void FixedUpdate()
+        // Set the correct camera FOV for sprint mode.
+        if (IsSprinting())
+        {
+            changedFOV = true;
+            camScript.SetFOV(sprintFOV);
+        }
+        else if (changedFOV)
+        {
+            camScript.ResetFOV();
+            changedFOV = false;
+        }
+        // Set the grounded test on the Animator Controller.
+        anim.SetBool(groundedBool, IsGrounded());
+    }
+
+    // Call the FixedUpdate functions of the active or overriding behaviours.
+    void FixedUpdate()
 	{
 		// Call the active behaviour if no other is overriding.
 		bool isAnyBehaviourActive = false;

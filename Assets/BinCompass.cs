@@ -62,7 +62,7 @@ public class BinCompass : MonoBehaviour
     private void RefreshBinList()
     {
         bins.Clear();
-        var found = FindObjectsByType<RecycleBin>(FindObjectsSortMode.None);
+        var found = FindObjectsByType<RecycleBin>(FindObjectsInactive.Exclude);
         foreach (var b in found) bins.Add(b);
     }
 

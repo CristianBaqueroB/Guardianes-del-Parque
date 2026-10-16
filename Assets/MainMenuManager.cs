@@ -78,7 +78,7 @@ public class MainMenuManager : MonoBehaviour
 
         bodyStyle = new GUIStyle(GUI.skin.label)
         {
-            fontSize = 14,
+            fontSize = 13,
             alignment = TextAnchor.UpperLeft,
             wordWrap = true
         };
@@ -123,7 +123,7 @@ public class MainMenuManager : MonoBehaviour
         GUI.color = Color.white;
 
         float panelW = Mathf.Min(620f, Screen.width - 60f);
-        float panelH = 480f;
+        float panelH = 500f;
         float px = (Screen.width - panelW) / 2f;
         float py = (Screen.height - panelH) / 2f;
 
@@ -136,19 +136,19 @@ public class MainMenuManager : MonoBehaviour
         // Titulo animado
         float pulse = 0.85f + 0.15f * Mathf.Sin(animTime * 1.8f);
         GUI.color = new Color(1f, 1f, 1f, pulse);
-        GUILayout.Label("GUARDIANES DEL PARQUE", titleStyle, GUILayout.Height(44));
+        GUILayout.Label("GUARDIANES DEL PARQUE", titleStyle, GUILayout.Height(40));
         GUI.color = Color.white;
 
-        GUILayout.Label("Parque de la Vida - Valledupar, Cesar", pageStyle, GUILayout.Height(20));
-        GUILayout.Space(10);
+        GUILayout.Label("Parque de la Vida - Valledupar, Cesar", pageStyle, GUILayout.Height(18));
+        GUILayout.Space(8);
 
-        // Paginas de tutorial
+        // Paginas de tutorial / historia
         DrawTutorialPage(tutorialPage, panelW - 56);
 
-        GUILayout.Space(12);
+        GUILayout.Space(10);
 
         // Indicador de pagina
-        GUILayout.Label($"Pagina {tutorialPage + 1} de {TOTAL_PAGES}", pageStyle, GUILayout.Height(18));
+        GUILayout.Label($"Página {tutorialPage + 1} de {TOTAL_PAGES}", pageStyle, GUILayout.Height(18));
         GUILayout.Space(6);
 
         // Botones de navegacion
@@ -178,10 +178,10 @@ public class MainMenuManager : MonoBehaviour
         int hs = PlayerPrefs.GetInt("HighScore", 0);
         if (hs > 0)
         {
-            GUILayout.Space(8);
+            GUILayout.Space(6);
             GUIStyle hsStyle = new GUIStyle(pageStyle) { fontSize = 12 };
             hsStyle.normal.textColor = new Color(1f, 0.85f, 0.2f);
-            GUILayout.Label($"Mejor puntaje: {hs} pts", hsStyle, GUILayout.Height(18));
+            GUILayout.Label($"Mejor puntaje: {hs} pts", hsStyle, GUILayout.Height(16));
         }
 
         GUILayout.EndArea();
@@ -192,44 +192,39 @@ public class MainMenuManager : MonoBehaviour
         switch (page)
         {
             case 0:
-                GUILayout.Label("MISION", new GUIStyle(bodyStyle) { fontSize = 16, fontStyle = FontStyle.Bold, normal = { textColor = new Color(0.35f, 1f, 0.55f) } }, GUILayout.Height(24));
+                GUILayout.Label("HISTORIA", new GUIStyle(bodyStyle) { fontSize = 16, fontStyle = FontStyle.Bold, normal = { textColor = new Color(0.35f, 1f, 0.55f) } }, GUILayout.Height(24));
                 GUILayout.Space(4);
                 GUILayout.Label(
-                    "El Parque de la Vida de Valledupar esta contaminado.\n\n" +
-                    "Tu mision como Guardian es recoger los residuos esparcidos " +
-                    "por el parque y clasificarlos correctamente en los Puntos Limpios " +
-                    "antes de que se acabe el tiempo.\n\n" +
-                    "Clasifica 10 residuos correctamente para ganar.\n\n" +
-                    "Cuidado con el CONTAMINADOR que patrulla el parque.", bodyStyle, GUILayout.Height(200));
+                    "El Parque de la Vida está cerrado por culpa de personas sin amor por Valledupar que lo llenaron de basura.\n\n" +
+                    "Esto causó una crisis: los turistas dicen que la ciudad está muy sucia. Las autoridades cerraron el parque mientras lo limpian, pero la seguridad no deja entrar a nadie.\n\n" +
+                    "Tú amas tu ciudad y tu parque, así que estás decidido a ayudar con la causa clandestinamente. ¡Cuidado con la seguridad mientras salvas el lugar!", bodyStyle, GUILayout.Height(210));
                 break;
 
             case 1:
                 GUILayout.Label("CONTROLES", new GUIStyle(bodyStyle) { fontSize = 16, fontStyle = FontStyle.Bold, normal = { textColor = new Color(1f, 0.85f, 0.3f) } }, GUILayout.Height(24));
                 GUILayout.Space(4);
                 GUILayout.Label(
-                    "[W / A / S / D]  -  Mover al Guardian\n" +
-                    "[ESPACIO]         -  Saltar\n" +
-                    "[E]                     -  Recoger residuo del suelo\n" +
+                    "[W / A / S / D]  -  Mover al Guasón / Guardián\n" +
+                    "[ESPACIO]        -  Saltar\n" +
+                    "[E]              -  Recoger residuo del suelo\n" +
                     "[E] (en caneca)  -  Depositar residuo\n" +
-                    "[Q] o Rueda     -  Cambiar residuo en mano\n" +
-                    "[1] [2] [3]         -  Seleccionar slot del inventario\n" +
-                    "[P] o [Escape]  -  Pausar partida\n\n" +
-                    "La mochila aguanta hasta 3 residuos a la vez.\n" +
-                    "Cuando se llene, ve a un Punto Limpio a depositar.", bodyStyle, GUILayout.Height(200));
+                    "[Q] o Rueda      -  Cambiar residuo en mano\n" +
+                    "[1] [2] [3]      -  Seleccionar slot del inventario\n" +
+                    "[P] o [Escape]   -  Pausar partida\n\n" +
+                    "La mochila aguanta hasta 3 residuos. ¡Llévala a los Puntos Limpios!", bodyStyle, GUILayout.Height(210));
                 break;
 
             case 2:
-                GUILayout.Label("CLASIFICACION DE RESIDUOS", new GUIStyle(bodyStyle) { fontSize = 16, fontStyle = FontStyle.Bold, normal = { textColor = new Color(0.4f, 0.8f, 1f) } }, GUILayout.Height(24));
+                GUILayout.Label("CLASIFICACIÓN DE RESIDUOS", new GUIStyle(bodyStyle) { fontSize = 16, fontStyle = FontStyle.Bold, normal = { textColor = new Color(0.4f, 0.8f, 1f) } }, GUILayout.Height(24));
                 GUILayout.Space(4);
                 GUILayout.Label(
-                    "[A] Caneca BLANCA        - Aprovechables\n" +
-                    "     Botellas plásticas, bolsas plásticas, vidrio y latas\n\n" +
-                    "[O] Caneca VERDE      - Orgánicos\n" +
-                    "     Residuos de comida, cáscaras, materia vegetal\n\n" +
-                    "[N] Caneca GRIS         - No Aprovechable\n" +
-                    "     Pilas, medicamentos, colillas, residuos mezclados\n\n" +
-                    "Cada acierto da puntos y tiempo extra.\n" +
-                    "Un error resta puntos y tiempo.", bodyStyle, GUILayout.Height(200));
+                    "[A] Caneca AMARILLA  -  Aprovechables\n" +
+                    "     Botellas plásticas y botellas de vidrio azul\n\n" +
+                    "[O] Caneca VERDE     -  Orgánicos\n" +
+                    "     Restos de manzana y montones vegetales\n\n" +
+                    "[N] Caneca NEGRA     -  No Aprovechable\n" +
+                    "     Cajas de pizza engrasadas y otros residuos\n\n" +
+                    "¡Cada acierto da puntos y tiempo extra para rescatar el parque!", bodyStyle, GUILayout.Height(210));
                 break;
         }
     }

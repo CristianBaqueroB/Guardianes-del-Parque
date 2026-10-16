@@ -109,8 +109,8 @@ public class EcoMissionManager : MonoBehaviour
         {
             new EcoMission
             {
-                title = "Misión 1: Iniciativa Valledupar Limpia",
-                description = "Clasifica correctamente 2 residuos en los Puntos Limpios.",
+                title = "Misión 1: Primeros Pasos",
+                description = "Clasifica 2 residuos cualquiera. Puedes usar BOTELLAS, MANZANAS o CAJAS DE PIZZA y llevarlas a sus canecas.",
                 type = EcoMissionType.DepositAnyTrash,
                 targetCount = 2,
                 bonusPoints = 40,
@@ -119,40 +119,41 @@ public class EcoMissionManager : MonoBehaviour
             },
             new EcoMission
             {
-                title = "Misión 2: Aprovechando los Materiales",
-                description = "Clasifica 2 residuos en la Caneca de Aprovechables.",
+                title = "Misión 2: Botellas al Reciclaje",
+                description = "Clasifica 2 objetos Aprovechables. Busca BOTELLAS DE AGUA o BOTELLAS DE VIDRIO AZUL y deposítalas en su caneca.",
                 type = EcoMissionType.DepositCategory,
                 targetCategory = TrashCategory.Aprovechables,
                 targetCount = 2,
                 bonusPoints = 50,
                 bonusTime = 15f,
-                educationalFact = "El plástico, el vidrio y el cartón se pueden reciclar y transformar para darles una nueva vida útil."
+                educationalFact = "El plástico y el vidrio se pueden reciclar y transformar para darles una nueva vida útil."
             },
             new EcoMission
             {
-                title = "Misión 3: Nutriendo el Parque",
-                description = "Clasifica 1 residuo en la Caneca de Orgánicos.",
+                title = "Misión 3: Abono para el Parque",
+                description = "Clasifica 2 residuos Orgánicos. Busca RESTOS DE MANZANA o MONTONES ORGÁNICOS y deposítalos en su caneca.",
                 type = EcoMissionType.DepositCategory,
                 targetCategory = TrashCategory.Organico,
-                targetCount = 1,
+                targetCount = 2,
                 bonusPoints = 50,
                 bonusTime = 15f,
                 educationalFact = "Los residuos orgánicos se convierten en abono natural ideal para mantener verdes los jardines del Parque de la Vida."
             },
             new EcoMission
             {
-                title = "Misión 4: Guardián Disciplinado",
-                description = "Consigue una racha de x3 aciertos sin equivocarte.",
-                type = EcoMissionType.ReachStreak,
-                targetCount = 3,
-                bonusPoints = 80,
+                title = "Misión 4: Ojo con la Grasa",
+                description = "Clasifica 1 residuo No Aprovechable. Busca una CAJA DE PIZZA y deposítala en la caneca correspondiente.",
+                type = EcoMissionType.DepositCategory,
+                targetCategory = TrashCategory.NoAprovechable,
+                targetCount = 1,
+                bonusPoints = 60,
                 bonusTime = 20f,
-                educationalFact = "¡La disciplina ecológica constante es la clave para mantener limpio Valledupar!"
+                educationalFact = "El cartón es reciclable, pero si está engrasado como las cajas de pizza, debe ir a los No Aprovechables."
             },
             new EcoMission
             {
-                title = "Misión 5: Restauración de la Fuente y el Parque",
-                description = "Alcanza el 100% de Pureza Ambiental en el Parque de la Vida.",
+                title = "Misión 5: Guardián de Valledupar",
+                description = "Clasifica el resto de la basura del parque sin equivocarte hasta alcanzar el 100% de Pureza Ambiental.",
                 type = EcoMissionType.ReachEcoPurity,
                 targetCount = 100,
                 bonusPoints = 150,
@@ -492,8 +493,8 @@ public class EcoMissionManager : MonoBehaviour
         var mission = CurrentMission;
         if (mission != null && !mission.isCompleted)
         {
-            float mWidth = 290f;
-            float mHeight = 92f;
+            float mWidth = 360f;
+            float mHeight = 125f;
             float mX = Screen.width - mWidth - 20f;
             float mY = 20f;
 
@@ -550,7 +551,7 @@ public class EcoMissionManager : MonoBehaviour
         // Cache de bins
         if (cachedBins == null || Time.time > binCacheTime + 5f)
         {
-            cachedBins = FindObjectsByType<RecycleBin>(FindObjectsSortMode.None);
+            cachedBins = FindObjectsByType<RecycleBin>(FindObjectsInactive.Exclude);
             binCacheTime = Time.time;
         }
         if (cachedBins == null || cachedBins.Length == 0) return;

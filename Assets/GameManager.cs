@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Objetivos de Limpieza")]
     public int collectedTrash = 0;
-    public int totalTrash = 10;
+    public int totalTrash = 10; // Exige exactamente los 10 objetos para ganar
 
     [Header("Puntuación y Clasificación")]
     public int score = 0;
@@ -31,6 +31,10 @@ public class GameManager : MonoBehaviour
     public bool isPaused = false;
     public bool isGameOver = false;
     public bool isVictory = false;
+
+    [Header("Control de Cámara en Pausa")]
+    [Tooltip("Arrastra aquí el script que controla la cámara (ej. ThirdPersonCamera, CinemachineBrain, etc.)")]
+    public MonoBehaviour cameraController;
 
     [Header("Penalizaciones")]
     public int incorrectScorePenalty = 10;
@@ -63,6 +67,9 @@ public class GameManager : MonoBehaviour
     {
         // Cargar HighScore guardado
         highScore = PlayerPrefs.GetInt("HighScore", 0);
+
+        // Forzar exactamente 10 para cumplir la meta
+        totalTrash = 10;
 
         // Desactiva textos y paneles sueltos que causaban colision visual en pantalla
         GameObject winTextObj = GameObject.Find("WinText");
@@ -120,6 +127,12 @@ public class GameManager : MonoBehaviour
         {
             pausePanel.SetActive(isPaused);
         }
+
+        // Desactiva la rotación de la cámara al estar en pausa
+        if (cameraController != null)
+        {
+            cameraController.enabled = !isPaused;
+        }
     }
 
     /// <summary>Llamado por MainMenuManager cuando el jugador presiona JUGAR</summary>
@@ -134,6 +147,8 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -197,17 +212,21 @@ public class GameManager : MonoBehaviour
         if (isCorrect)
         {
             collectedTrash++;
+            if (collectedTrash > totalTrash) collectedTrash = totalTrash; // Garantiza que no pase de 10
+
             correctlyClassified++;
             currentStreak++;
             if (currentStreak > highestStreak) highestStreak = currentStreak;
 
             multiplier = GetCurrentMultiplier();
-            deltaPoints = Mathf.RoundToInt(points * multiplier);
+
+            // --- CERO PUNTOS POR RESIDUO (LOS PUNTOS LOS DA LA MISIÓN) ---
+            deltaPoints = 0;
 
             float streakBonusTime = (currentStreak >= 3) ? 2.5f : 0f;
             deltaTime = extraTime + streakBonusTime;
 
-            score += deltaPoints;
+            // NO sumamos puntos aquí. Solo sumamos el tiempo extra por clasificar bien.
             timeRemaining += deltaTime;
         }
         else
@@ -216,6 +235,7 @@ public class GameManager : MonoBehaviour
             currentStreak = 0;
             multiplier = 1f;
 
+            // --- SÍ RESTAMOS PUNTOS SI SE EQUIVOCA ---
             deltaPoints = -incorrectScorePenalty;
             deltaTime = -incorrectTimePenalty;
 
@@ -228,7 +248,7 @@ public class GameManager : MonoBehaviour
 
         UpdateUI();
 
-        // Condición de victoria: Alcanzar el objetivo de residuos o pureza al 100%
+        // Condición de victoria estricta al llegar exactamente a los 10 residuos
         if (collectedTrash >= totalTrash)
         {
             timerRunning = false;
@@ -261,6 +281,8 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
+        if (cameraController != null) cameraController.enabled = false;
+
         if (counterText != null) counterText.gameObject.SetActive(false);
         if (timerText != null) timerText.gameObject.SetActive(false);
         if (winPanel != null) winPanel.SetActive(false);
@@ -282,6 +304,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        if (cameraController != null) cameraController.enabled = false;
 
         if (counterText != null) counterText.gameObject.SetActive(false);
         if (timerText != null) timerText.gameObject.SetActive(false);

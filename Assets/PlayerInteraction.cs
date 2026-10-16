@@ -23,7 +23,7 @@ public class PlayerInteraction : MonoBehaviour
             anim = GetComponentInChildren<Animator>();
         }
 
-        // Asegura que exista el HUD en la escena automaticamente
+        // Asegura que exista el HUD en la escena automáticamente
         if (InteractionHUD.Instance == null && FindAnyObjectByType<InteractionHUD>() == null)
         {
             GameObject hudObj = new GameObject("InteractionHUD_Auto");
@@ -37,7 +37,7 @@ public class PlayerInteraction : MonoBehaviour
             ecoObj.AddComponent<EcoMissionManager>();
         }
 
-        // Asegura que exista la mini-brujula de canecas en el jugador
+        // Asegura que exista la mini-brújula de canecas en el jugador
         if (BinCompass.Instance == null && GetComponent<BinCompass>() == null)
         {
             gameObject.AddComponent<BinCompass>();
@@ -77,6 +77,9 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Update()
     {
+        // Ignorar interacciones si el juego está en pausa
+        if (GameManager.instance != null && GameManager.instance.isPaused) return;
+
         HandleInventoryCycling();
         UpdatePrompt();
 
@@ -168,10 +171,8 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
 
-        if (anim != null)
-        {
-            anim.SetTrigger("PickUp");
-        }
+        // Dispara la animación de recolección de forma segura si el parámetro existe
+        TriggerPickUpAnimation();
 
         TrashData trashToCollect = currentTrash;
         currentTrash = null;
@@ -198,6 +199,21 @@ public class PlayerInteraction : MonoBehaviour
         Destroy(trashToCollect.gameObject);
     }
 
+    private void TriggerPickUpAnimation()
+    {
+        if (anim == null) return;
+
+        // Comprobación de seguridad para no lanzar error si 'PickUp' no existe en el Animator
+        foreach (AnimatorControllerParameter param in anim.parameters)
+        {
+            if (param.name == "PickUp")
+            {
+                anim.SetTrigger("PickUp");
+                break;
+            }
+        }
+    }
+
     private void InteractWithBin()
     {
         if (currentBin == null) return;
@@ -211,14 +227,11 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
 
-        // Extrae el ítem conscientemente seleccionado por el jugador
         CarriedTrash item = inventory.ExtractSelectedItem();
         if (item == null) return;
 
-        // Procesa el depósito en la caneca (ejecuta animaciones, partículas, audios y popups)
         RecycleBin.DepositResult result = currentBin.ProcessDeposit(item);
 
-        // Registra los puntos, combos y penalizaciones en el GameManager
         if (GameManager.instance != null)
         {
             int basePoints = currentBin.correctBonusPoints + item.points;
@@ -226,14 +239,12 @@ public class PlayerInteraction : MonoBehaviour
             GameManager.instance.RegisterDeposit(basePoints, baseBonusTime, result.isCorrect);
         }
 
-        // Notifica al gestor de misiones y pureza ambiental
         if (EcoMissionManager.Instance != null)
         {
             int streak = (GameManager.instance != null) ? GameManager.instance.currentStreak : 0;
             EcoMissionManager.Instance.OnTrashDeposited(item.category, result.isCorrect, streak);
         }
 
-        // Muestra notificación educativa en el HUD
         if (InteractionHUD.Instance != null)
         {
             InteractionHUD.Instance.ShowNotification(
@@ -243,7 +254,6 @@ public class PlayerInteraction : MonoBehaviour
                 4f
             );
 
-            // Flash de pantalla
             InteractionHUD.Instance.TriggerScreenFlash(result.isCorrect);
         }
     }

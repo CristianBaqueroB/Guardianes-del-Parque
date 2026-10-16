@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c76b15b5bfa7374a83f363e3cf4cece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrashData
-  trashName: Residuo
-  category: 3
+  trashName: Caja de Pizza
+  category: 2
   trashType: 
   points: 10
   timeBonus: 5
