@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
 /// Sistema de vida del jugador.
@@ -31,7 +31,6 @@ public class PlayerHealth : MonoBehaviour
 
     // Estilos OnGUI
     private GUIStyle hpLabelStyle;
-    private Texture2D hpBarFull;
     private Texture2D hpBarBg;
     private bool stylesInit = false;
 
@@ -75,7 +74,7 @@ public class PlayerHealth : MonoBehaviour
         damageFlashTimer = DAMAGE_FLASH_DURATION;
         regenDelayTimer = regenDelay;
 
-        // Notificacion HUD
+        // Notificacion HUD (el flash rojo lo gestiona InteractionHUD para evitar doble destello)
         if (InteractionHUD.Instance != null)
         {
             int remaining = Mathf.RoundToInt(currentHealth);
@@ -116,10 +115,6 @@ public class PlayerHealth : MonoBehaviour
         hpBarBg.SetPixel(0, 0, new Color(0.18f, 0.06f, 0.06f, 0.88f));
         hpBarBg.Apply();
 
-        hpBarFull = new Texture2D(1, 1);
-        hpBarFull.SetPixel(0, 0, new Color(0.85f, 0.15f, 0.15f, 0.92f));
-        hpBarFull.Apply();
-
         stylesInit = true;
     }
 
@@ -132,25 +127,21 @@ public class PlayerHealth : MonoBehaviour
 
         InitStyles();
 
+        float scale = Mathf.Clamp(Screen.height / 720f, 0.75f, 2.5f);
+        float virtualH = Screen.height / scale;
+        Matrix4x4 prevMatrix = GUI.matrix;
+        GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(scale, scale, 1f));
+
         // Barra de vida (esquina inferior izquierda)
         float barW = 200f;
         float barH = 16f;
         float bx = 20f;
-        float by = Screen.height - 52f;
-
-        // Flash de dano (brillo rojo)
-        if (damageFlashTimer > 0f)
-        {
-            float a = (damageFlashTimer / DAMAGE_FLASH_DURATION) * 0.45f;
-            GUI.color = new Color(1f, 0f, 0f, a);
-            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Texture2D.whiteTexture);
-            GUI.color = Color.white;
-        }
+        float by = virtualH - 52f;
 
         // Fondo de la barra
         GUI.DrawTexture(new Rect(bx, by, barW, barH), hpBarBg);
 
-        // Relleno segun HP actual
+        // Relleno segun HP actual (reutilizando whiteTexture para evitar fugas de memoria)
         float fillW = (currentHealth / maxHealth) * (barW - 2f);
         Color barColor;
         if (HealthPercent > 0.6f)      barColor = new Color(0.2f, 0.85f, 0.3f);
@@ -159,10 +150,9 @@ public class PlayerHealth : MonoBehaviour
 
         if (fillW > 0f)
         {
-            Texture2D fillTex = new Texture2D(1, 1);
-            fillTex.SetPixel(0, 0, barColor);
-            fillTex.Apply();
-            GUI.DrawTexture(new Rect(bx + 1, by + 1, fillW, barH - 2), fillTex);
+            GUI.color = barColor;
+            GUI.DrawTexture(new Rect(bx + 1, by + 1, fillW, barH - 2), Texture2D.whiteTexture);
+            GUI.color = Color.white;
         }
 
         // Etiqueta HP
@@ -178,5 +168,7 @@ public class PlayerHealth : MonoBehaviour
                 "[PROTEGIDO]", hpLabelStyle);
             GUI.color = Color.white;
         }
+
+        GUI.matrix = prevMatrix;
     }
 }

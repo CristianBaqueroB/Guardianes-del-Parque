@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>
 /// Gestor de audio ambiental.
@@ -36,6 +36,8 @@ public class AmbientAudioManager : MonoBehaviour
 
     private void Start()
     {
+        masterVolume = PlayerPrefs.GetFloat("MasterVolume", masterVolume);
+
         // Crear AudioSources
         ambientSource = CreateAudioSource("AmbientSource", ambientVolume, true, 0f);
         musicSource   = CreateAudioSource("MusicSource",   musicVolume,   true, 0f);
@@ -197,6 +199,7 @@ public class AmbientAudioManager : MonoBehaviour
     public void SetMasterVolume(float vol)
     {
         masterVolume = Mathf.Clamp01(vol);
+        PlayerPrefs.SetFloat("MasterVolume", masterVolume);
         if (ambientSource) ambientSource.volume = ambientVolume * masterVolume;
         if (musicSource)   musicSource.volume   = musicVolume   * masterVolume;
         if (birdSource)    birdSource.volume     = ambientVolume * 0.7f * masterVolume;

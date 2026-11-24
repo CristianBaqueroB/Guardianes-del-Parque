@@ -33,6 +33,8 @@ public class RandomTrashGenerator : MonoBehaviour
     private List<GameObject> activeTrashList = new List<GameObject>();
     private float nextRespawnTime = 0f;
 
+    public IReadOnlyList<GameObject> ActiveTrash => activeTrashList;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -107,6 +109,28 @@ public class RandomTrashGenerator : MonoBehaviour
                 SpawnSingleTrash();
             }
         }
+
+        // Garantizar al menos 2 residuos de la categoría de la misión activa
+        if (EcoMissionManager.Instance != null)
+        {
+            var mission = EcoMissionManager.Instance.CurrentMission;
+            if (mission != null && !mission.isCompleted && mission.type == EcoMissionType.DepositCategory)
+            {
+                int matchingCount = 0;
+                foreach (var obj in activeTrashList)
+                {
+                    if (obj == null) continue;
+                    var td = obj.GetComponent<TrashData>();
+                    if (td != null && td.category == mission.targetCategory) matchingCount++;
+                }
+
+                int needed = 2 - matchingCount;
+                for (int i = 0; i < needed; i++)
+                {
+                    SpawnSingleTrash(mission.targetCategory);
+                }
+            }
+        }
     }
 
     private void SpawnInitialTrash()
@@ -125,15 +149,33 @@ public class RandomTrashGenerator : MonoBehaviour
         }
     }
 
-    private bool SpawnSingleTrash()
+    public bool SpawnTrashAt(Vector3 worldPos)
+    {
+        if (activeTrashList.Count >= targetTrashCount + 4) return false;
+        Vector3 spawnPos = worldPos + Vector3.up * yOffset;
+        if (Physics.Raycast(worldPos + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 20f))
+        {
+            if (hit.collider is TerrainCollider || (terrain != null && hit.collider.gameObject == terrain.gameObject))
+            {
+                spawnPos = hit.point + Vector3.up * yOffset;
+            }
+        }
+        return SpawnSingleTrash(null, spawnPos);
+    }
+
+    private bool SpawnSingleTrash(TrashCategory? requiredCategory = null, Vector3? forcedPos = null)
     {
         if (trashPrefabs == null || trashPrefabs.Length == 0) return false;
 
-        GameObject prefab = trashPrefabs[Random.Range(0, trashPrefabs.Length)];
+        GameObject prefab = PickPrefabForCategory(requiredCategory);
         if (prefab == null) return false;
 
         Vector3 spawnPos;
-        if (!TryGetValidGroundPosition(out spawnPos))
+        if (forcedPos.HasValue)
+        {
+            spawnPos = forcedPos.Value;
+        }
+        else if (!TryGetValidGroundPosition(out spawnPos))
         {
             return false;
         }
@@ -155,6 +197,10 @@ public class RandomTrashGenerator : MonoBehaviour
             data = trashObj.AddComponent<TrashData>();
             ConfigureTrashDataByCategory(data, trashObj.name);
         }
+        else if (requiredCategory.HasValue && data.category != requiredCategory.Value)
+        {
+            data.category = requiredCategory.Value;
+        }
 
         if (addFloatingAnimation && trashObj.GetComponent<FloatingTrash>() == null)
         {
@@ -171,6 +217,39 @@ public class RandomTrashGenerator : MonoBehaviour
 
         activeTrashList.Add(trashObj);
         return true;
+    }
+
+    private GameObject PickPrefabForCategory(TrashCategory? requiredCategory)
+    {
+        if (!requiredCategory.HasValue)
+        {
+            return trashPrefabs[Random.Range(0, trashPrefabs.Length)];
+        }
+
+        List<GameObject> matches = new List<GameObject>();
+        foreach (var p in trashPrefabs)
+        {
+            if (p == null) continue;
+            var td = p.GetComponent<TrashData>();
+            if (td != null && td.category == requiredCategory.Value)
+            {
+                matches.Add(p);
+                continue;
+            }
+
+            string lower = p.name.ToLower();
+            bool isAprovechable = lower.Contains("bag") || lower.Contains("bolsa") || lower.Contains("water") || lower.Contains("watter") || lower.Contains("plastic") || lower.Contains("bottle") || lower.Contains("straw") || lower.Contains("paja") || lower.Contains("pitillo") || lower.Contains("soda") || lower.Contains("vidrio") || lower.Contains("glass") || lower.Contains("jar");
+            bool isOrganico = lower.Contains("pile") || lower.Contains("food") || lower.Contains("organ") || lower.Contains("cascara") || lower.Contains("fruit");
+
+            if (requiredCategory.Value == TrashCategory.Aprovechables && isAprovechable) matches.Add(p);
+            else if (requiredCategory.Value == TrashCategory.Organico && isOrganico) matches.Add(p);
+            else if (requiredCategory.Value == TrashCategory.NoAprovechable && !isAprovechable && !isOrganico) matches.Add(p);
+        }
+
+        if (matches.Count > 0)
+            return matches[Random.Range(0, matches.Count)];
+
+        return trashPrefabs[Random.Range(0, trashPrefabs.Length)];
     }
 
     /// <summary>

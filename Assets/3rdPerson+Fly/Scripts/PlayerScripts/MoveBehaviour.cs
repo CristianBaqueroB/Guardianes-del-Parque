@@ -14,10 +14,15 @@ public class MoveBehaviour : GenericBehaviour
     public float jumpInertialForce = 10f;           // Default horizontal inertial force when jumping.
 
     private float speed;                            // Moving speed.
+    private Vector3 currentGroundVelocity;          // Velocidad horizontal real medida desde Root Motion.
+    private float jumpMaxAirSpeed;                  // Velocidad horizontal máxima permitida durante el salto actual.
     private int jumpBool;                           // Animator variable related to jumping.
     private int groundedBool;                       // Animator variable related to whether or not the player is on ground.
     private bool jump;                              // Boolean to determine whether or not the player started a jump.
     private bool isColliding;                       // Boolean to determine if the player has collided with an obstacle.
+    private AudioSource moveAudioSource;
+    private static AudioClip jumpSfxClip;
+    private static AudioClip landSfxClip;
 
     // Start is always called after any Awake functions.
     void Start()
@@ -30,6 +35,14 @@ public class MoveBehaviour : GenericBehaviour
         // Subscribe and register this behaviour as the default behaviour.
         behaviourManager.SubscribeBehaviour(this);
         behaviourManager.RegisterDefaultBehaviour(this.behaviourCode);
+
+        moveAudioSource = GetComponent<AudioSource>();
+        if (moveAudioSource == null)
+        {
+            moveAudioSource = gameObject.AddComponent<AudioSource>();
+            moveAudioSource.playOnAwake = false;
+            moveAudioSource.spatialBlend = 0f;
+        }
     }
 
     // Update is used to set features regardless the active behaviour.
@@ -59,6 +72,10 @@ public class MoveBehaviour : GenericBehaviour
         {
             // Toma el delta de posición calculado por el Animator debido al Root Motion y multiplícalo por tu escala
             Vector3 movementDelta = behaviourManager.GetAnim.deltaPosition * animatorSpeedMultiplier;
+            if (Time.deltaTime > 0.0001f)
+            {
+                currentGroundVelocity = new Vector3(movementDelta.x, 0f, movementDelta.z) / Time.deltaTime;
+            }
             movementDelta.y = behaviourManager.GetRigidBody.linearVelocity.y * Time.deltaTime; // Preserva la gravedad
 
             // Mueve el Rigidbody usando el desplazamiento del Root Motion modificado
@@ -67,6 +84,10 @@ public class MoveBehaviour : GenericBehaviour
             // Aplica la rotación del Root Motion de forma fluida
             Quaternion newRotation = behaviourManager.GetRigidBody.rotation * behaviourManager.GetAnim.deltaRotation;
             behaviourManager.GetRigidBody.MoveRotation(newRotation);
+        }
+        else if (speed <= 0.1f)
+        {
+            currentGroundVelocity = Vector3.zero;
         }
     }
 
@@ -90,24 +111,27 @@ public class MoveBehaviour : GenericBehaviour
             // Set jump vertical impulse velocity.
             float jumpVelY = Mathf.Sqrt(2f * Mathf.Abs(Physics.gravity.y) * jumpHeight);
 
-            // Preservar la inercia horizontal natural según la velocidad y dirección actual
+            // Preservar la inercia horizontal real del Root Motion (no el parámetro del Blend Tree)
             Vector3 horizontalVelocity = Vector3.zero;
             if (speed > 0.1f)
             {
-                horizontalVelocity = transform.forward * speed;
+                horizontalVelocity = currentGroundVelocity;
             }
+            jumpMaxAirSpeed = horizontalVelocity.magnitude;
 
-            // Asignar velocidad inicial limpia al Rigidbody (sin aceleraciones continuas descontroladas)
+            // Asignar velocidad inicial limpia al Rigidbody (sin aceleraciones al saltar)
             behaviourManager.GetRigidBody.linearVelocity = new Vector3(horizontalVelocity.x, jumpVelY, horizontalVelocity.z);
+            PlayMoveSfx(true);
         }
         // Is already jumping?
         else if (behaviourManager.GetAnim.GetBool(jumpBool))
         {
-            // Control en el aire suave y acotado a la velocidad máxima permitida
+            // Control en el aire suave y acotado a la velocidad con la que despegó
             if (!behaviourManager.IsGrounded() && !isColliding)
             {
                 Vector2 dir = new Vector2(behaviourManager.GetH, behaviourManager.GetV);
-                float maxAirSpeed = behaviourManager.IsSprinting() ? sprintSpeed : runSpeed;
+                // Si saltó quieto, permitir un ajuste aéreo mínimo sin acelerar como sprint
+                float maxAirSpeed = Mathf.Max(jumpMaxAirSpeed, 1.5f);
 
                 if (dir.sqrMagnitude > 0.01f)
                 {
@@ -116,13 +140,12 @@ public class MoveBehaviour : GenericBehaviour
                     Vector3 curVel = behaviourManager.GetRigidBody.linearVelocity;
                     Vector3 curHoriz = new Vector3(curVel.x, 0, curVel.z);
 
-                    // Ajuste de trayectoria en el aire sin propulsión infinita
-                    Vector3 newHoriz = Vector3.MoveTowards(curHoriz, targetHoriz, maxAirSpeed * 3f * Time.deltaTime);
+                    // Ajuste de trayectoria en el aire sin superar la velocidad de despegue
+                    Vector3 newHoriz = Vector3.MoveTowards(curHoriz, targetHoriz, maxAirSpeed * 1.5f * Time.deltaTime);
                     behaviourManager.GetRigidBody.linearVelocity = new Vector3(newHoriz.x, curVel.y, newHoriz.z);
                 }
                 else
                 {
-                    // Asegurar que la velocidad horizontal nunca exceda la velocidad de sprint
                     Vector3 curVel = behaviourManager.GetRigidBody.linearVelocity;
                     Vector3 curHoriz = Vector3.ClampMagnitude(new Vector3(curVel.x, 0, curVel.z), maxAirSpeed);
                     behaviourManager.GetRigidBody.linearVelocity = new Vector3(curHoriz.x, curVel.y, curHoriz.z);
@@ -140,6 +163,7 @@ public class MoveBehaviour : GenericBehaviour
                 jump = false;
                 behaviourManager.GetAnim.SetBool(jumpBool, false);
                 behaviourManager.UnlockTempBehaviour(this.behaviourCode);
+                PlayMoveSfx(false);
             }
         }
     }
@@ -243,5 +267,48 @@ public class MoveBehaviour : GenericBehaviour
         isColliding = false;
         GetComponent<CapsuleCollider>().material.dynamicFriction = 0.6f;
         GetComponent<CapsuleCollider>().material.staticFriction = 0.6f;
+    }
+
+    private void PlayMoveSfx(bool isJump)
+    {
+        if (moveAudioSource == null) return;
+        float vol = (AmbientAudioManager.Instance != null) ? AmbientAudioManager.Instance.masterVolume * 0.45f : 0.25f;
+        moveAudioSource.PlayOneShot(isJump ? GetJumpClip() : GetLandClip(), vol);
+    }
+
+    private static AudioClip GetJumpClip()
+    {
+        if (jumpSfxClip != null) return jumpSfxClip;
+        int sr = 22050;
+        int samples = (int)(sr * 0.14f);
+        float[] data = new float[samples];
+        for (int i = 0; i < samples; i++)
+        {
+            float t = (float)i / samples;
+            float freq = Mathf.Lerp(190f, 420f, t);
+            float env = (1f - t) * Mathf.Sin(t * Mathf.PI);
+            data[i] = Mathf.Sin(2f * Mathf.PI * freq * ((float)i / sr)) * env * 0.5f;
+        }
+        jumpSfxClip = AudioClip.Create("JumpSfx", samples, 1, sr, false);
+        jumpSfxClip.SetData(data, 0);
+        return jumpSfxClip;
+    }
+
+    private static AudioClip GetLandClip()
+    {
+        if (landSfxClip != null) return landSfxClip;
+        int sr = 22050;
+        int samples = (int)(sr * 0.10f);
+        float[] data = new float[samples];
+        for (int i = 0; i < samples; i++)
+        {
+            float t = (float)i / samples;
+            float freq = Mathf.Lerp(140f, 65f, t);
+            float env = 1f - t;
+            data[i] = Mathf.Sin(2f * Mathf.PI * freq * ((float)i / sr)) * env * 0.45f;
+        }
+        landSfxClip = AudioClip.Create("LandSfx", samples, 1, sr, false);
+        landSfxClip.SetData(data, 0);
+        return landSfxClip;
     }
 }

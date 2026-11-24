@@ -135,6 +135,33 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>Configura tiempo, meta y pureza según la dificultad elegida</summary>
+    public void ApplyDifficulty(int level)
+    {
+        switch (level)
+        {
+            case 0: // Fácil
+                totalTrash = 8;
+                timeRemaining = 150f;
+                break;
+            case 2: // Difícil
+                totalTrash = 15;
+                timeRemaining = 90f;
+                break;
+            default: // Normal
+                totalTrash = 10;
+                timeRemaining = 120f;
+                break;
+        }
+
+        if (EcoMissionManager.Instance != null && totalTrash > 0)
+        {
+            EcoMissionManager.Instance.purityPerCorrectDeposit = 75f / totalTrash;
+        }
+
+        UpdateUI();
+    }
+
     /// <summary>Llamado por MainMenuManager cuando el jugador presiona JUGAR</summary>
     public void SetGameStarted(bool started)
     {
@@ -358,30 +385,49 @@ public class GameManager : MonoBehaviour
 
     private void OnGUI()
     {
+        if (!isPaused && !isVictory && !isGameOver) return;
+
         InitMenuStyles();
+
+        float scale = Mathf.Clamp(Screen.height / 720f, 0.75f, 2.5f);
+        float virtualW = Screen.width / scale;
+        float virtualH = Screen.height / scale;
+        Matrix4x4 prevMatrix = GUI.matrix;
+        GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(scale, scale, 1f));
 
         // 1. Menú de Pausa
         if (isPaused)
         {
-            float width = 440;
-            float height = 330;
-            float x = (Screen.width - width) / 2f;
-            float y = (Screen.height - height) / 2f;
+            float width = 460;
+            float height = 420;
+            float x = (virtualW - width) / 2f;
+            float y = (virtualH - height) / 2f;
 
             GUI.backgroundColor = new Color(0.06f, 0.11f, 0.16f, 0.96f);
             GUI.Box(new Rect(x, y, width, height), GUIContent.none, menuBoxStyle);
 
             GUILayout.BeginArea(new Rect(x + 20, y + 15, width - 40, height - 30));
             GUILayout.Label("⏸️ <b>JUEGO EN PAUSA</b>", menuTitleStyle);
-            GUILayout.Space(10);
+            GUILayout.Space(8);
 
             float purity = (EcoMissionManager.Instance != null) ? EcoMissionManager.Instance.currentPurity : 0f;
             GUILayout.Label($"<b>Puntos Actuales:</b> {score}   |   <b>Pureza:</b> {Mathf.RoundToInt(purity)}%", menuBodyStyle);
             GUILayout.Label($"<b>Racha Actual:</b> x{currentStreak}   |   <b>Mejor Racha:</b> x{highestStreak}", menuBodyStyle);
-            GUILayout.Space(10);
+            GUILayout.Space(8);
 
-            GUILayout.Label("<b>Controles:</b>\n• [W,A,S,D] Moverse  |  [Espacio] Saltar\n• [E] Recoger residuo / Depositar en caneca\n• [Q / Rueda Ratón] Cambiar residuo en mano", menuBodyStyle);
-            GUILayout.Space(15);
+            if (AmbientAudioManager.Instance != null)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label($"<b>Volumen:</b> {Mathf.RoundToInt(AmbientAudioManager.Instance.masterVolume * 100)}%", menuBodyStyle, GUILayout.Width(120));
+                float newVol = GUILayout.HorizontalSlider(AmbientAudioManager.Instance.masterVolume, 0f, 1f);
+                if (Mathf.Abs(newVol - AmbientAudioManager.Instance.masterVolume) > 0.005f)
+                    AmbientAudioManager.Instance.SetMasterVolume(newVol);
+                GUILayout.EndHorizontal();
+                GUILayout.Space(6);
+            }
+
+            GUILayout.Label("<b>Controles:</b>\n• [W,A,S,D] Moverse  |  [Espacio] Saltar\n• [E] Recoger residuo / Depositar en caneca\n• [Q / Rueda / 1-3] Cambiar residuo en mano\n• [P / Escape] Pausar o reanudar", menuBodyStyle);
+            GUILayout.Space(12);
 
             if (GUILayout.Button("▶ Reanudar Partida", menuBtnStyle, GUILayout.Height(36)))
             {
@@ -394,6 +440,14 @@ public class GameManager : MonoBehaviour
                 RestartGame();
             }
 
+            GUILayout.Space(5);
+            GUI.backgroundColor = new Color(0.65f, 0.2f, 0.2f);
+            if (GUILayout.Button("🚪 Salir del Juego", menuBtnStyle, GUILayout.Height(34)))
+            {
+                QuitGame();
+            }
+            GUI.backgroundColor = Color.white;
+
             GUILayout.EndArea();
         }
 
@@ -402,8 +456,8 @@ public class GameManager : MonoBehaviour
         {
             float width = 500;
             float height = 360;
-            float x = (Screen.width - width) / 2f;
-            float y = (Screen.height - height) / 2f;
+            float x = (virtualW - width) / 2f;
+            float y = (virtualH - height) / 2f;
 
             GUI.backgroundColor = new Color(0.05f, 0.22f, 0.11f, 0.97f);
             GUI.Box(new Rect(x, y, width, height), GUIContent.none, menuBoxStyle);
@@ -436,8 +490,8 @@ public class GameManager : MonoBehaviour
         {
             float width = 460;
             float height = 320;
-            float x = (Screen.width - width) / 2f;
-            float y = (Screen.height - height) / 2f;
+            float x = (virtualW - width) / 2f;
+            float y = (virtualH - height) / 2f;
 
             GUI.backgroundColor = new Color(0.28f, 0.07f, 0.07f, 0.97f);
             GUI.Box(new Rect(x, y, width, height), GUIContent.none, menuBoxStyle);
@@ -462,6 +516,8 @@ public class GameManager : MonoBehaviour
 
             GUILayout.EndArea();
         }
+
+        GUI.matrix = prevMatrix;
     }
     #endregion
 }

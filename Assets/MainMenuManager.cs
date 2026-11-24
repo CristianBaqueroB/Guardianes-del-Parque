@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -12,6 +12,7 @@ public class MainMenuManager : MonoBehaviour
     // Estado
     private bool showMenu = true;
     private int tutorialPage = 0;
+    private int selectedDifficulty = 1; // 0: Fácil, 1: Normal, 2: Difícil
     private const int TOTAL_PAGES = 3;
 
     // Estilos
@@ -21,6 +22,10 @@ public class MainMenuManager : MonoBehaviour
     private GUIStyle btnSecondary;
     private GUIStyle boxStyle;
     private GUIStyle pageStyle;
+    private GUIStyle hsStyle;
+    private GUIStyle headerGreenStyle;
+    private GUIStyle headerYellowStyle;
+    private GUIStyle headerBlueStyle;
     private bool stylesInit = false;
 
     // Animacion de fondo
@@ -60,7 +65,10 @@ public class MainMenuManager : MonoBehaviour
         Cursor.visible = false;
 
         if (GameManager.instance != null)
+        {
+            GameManager.instance.ApplyDifficulty(selectedDifficulty);
             GameManager.instance.SetGameStarted(true);
+        }
     }
 
     private void InitStyles()
@@ -108,6 +116,18 @@ public class MainMenuManager : MonoBehaviour
         };
         pageStyle.normal.textColor = new Color(0.6f, 0.6f, 0.6f);
 
+        hsStyle = new GUIStyle(pageStyle) { fontSize = 12 };
+        hsStyle.normal.textColor = new Color(1f, 0.85f, 0.2f);
+
+        headerGreenStyle = new GUIStyle(bodyStyle) { fontSize = 16, fontStyle = FontStyle.Bold };
+        headerGreenStyle.normal.textColor = new Color(0.35f, 1f, 0.55f);
+
+        headerYellowStyle = new GUIStyle(bodyStyle) { fontSize = 16, fontStyle = FontStyle.Bold };
+        headerYellowStyle.normal.textColor = new Color(1f, 0.85f, 0.3f);
+
+        headerBlueStyle = new GUIStyle(bodyStyle) { fontSize = 16, fontStyle = FontStyle.Bold };
+        headerBlueStyle.normal.textColor = new Color(0.4f, 0.8f, 1f);
+
         stylesInit = true;
     }
 
@@ -122,10 +142,16 @@ public class MainMenuManager : MonoBehaviour
         GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Texture2D.whiteTexture);
         GUI.color = Color.white;
 
-        float panelW = Mathf.Min(620f, Screen.width - 60f);
+        float scale = Mathf.Clamp(Screen.height / 720f, 0.75f, 2.5f);
+        float virtualW = Screen.width / scale;
+        float virtualH = Screen.height / scale;
+        Matrix4x4 prevMatrix = GUI.matrix;
+        GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(scale, scale, 1f));
+
+        float panelW = Mathf.Min(620f, virtualW - 60f);
         float panelH = 500f;
-        float px = (Screen.width - panelW) / 2f;
-        float py = (Screen.height - panelH) / 2f;
+        float px = (virtualW - panelW) / 2f;
+        float py = (virtualH - panelH) / 2f;
 
         // Panel principal
         GUI.backgroundColor = new Color(0.07f, 0.12f, 0.17f, 0.98f);
@@ -149,6 +175,20 @@ public class MainMenuManager : MonoBehaviour
 
         // Indicador de pagina
         GUILayout.Label($"Página {tutorialPage + 1} de {TOTAL_PAGES}", pageStyle, GUILayout.Height(18));
+        GUILayout.Space(4);
+
+        // Selector de dificultad
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Dificultad:", pageStyle, GUILayout.Width(70), GUILayout.Height(26));
+        string[] diffNames = { "Fácil (8)", "Normal (10)", "Difícil (15)" };
+        for (int i = 0; i < 3; i++)
+        {
+            GUI.backgroundColor = (selectedDifficulty == i) ? new Color(0.25f, 0.75f, 0.4f) : new Color(0.2f, 0.25f, 0.3f);
+            if (GUILayout.Button(diffNames[i], btnSecondary, GUILayout.Height(26)))
+                selectedDifficulty = i;
+        }
+        GUI.backgroundColor = Color.white;
+        GUILayout.EndHorizontal();
         GUILayout.Space(6);
 
         // Botones de navegacion
@@ -163,6 +203,11 @@ public class MainMenuManager : MonoBehaviour
         {
             if (GUILayout.Button("Siguiente >", btnSecondary, GUILayout.Height(34)))
                 tutorialPage++;
+
+            GUI.backgroundColor = new Color(0.2f, 0.65f, 0.3f);
+            if (GUILayout.Button("Saltar y Jugar", btnSecondary, GUILayout.Height(34), GUILayout.Width(135)))
+                StartGame();
+            GUI.backgroundColor = Color.white;
         }
         else
         {
@@ -179,12 +224,11 @@ public class MainMenuManager : MonoBehaviour
         if (hs > 0)
         {
             GUILayout.Space(6);
-            GUIStyle hsStyle = new GUIStyle(pageStyle) { fontSize = 12 };
-            hsStyle.normal.textColor = new Color(1f, 0.85f, 0.2f);
             GUILayout.Label($"Mejor puntaje: {hs} pts", hsStyle, GUILayout.Height(16));
         }
 
         GUILayout.EndArea();
+        GUI.matrix = prevMatrix;
     }
 
     private void DrawTutorialPage(int page, float width)
@@ -192,7 +236,7 @@ public class MainMenuManager : MonoBehaviour
         switch (page)
         {
             case 0:
-                GUILayout.Label("HISTORIA", new GUIStyle(bodyStyle) { fontSize = 16, fontStyle = FontStyle.Bold, normal = { textColor = new Color(0.35f, 1f, 0.55f) } }, GUILayout.Height(24));
+                GUILayout.Label("HISTORIA", headerGreenStyle, GUILayout.Height(24));
                 GUILayout.Space(4);
                 GUILayout.Label(
                     "El Parque de la Vida está cerrado por culpa de personas sin amor por Valledupar que lo llenaron de basura.\n\n" +
@@ -201,10 +245,10 @@ public class MainMenuManager : MonoBehaviour
                 break;
 
             case 1:
-                GUILayout.Label("CONTROLES", new GUIStyle(bodyStyle) { fontSize = 16, fontStyle = FontStyle.Bold, normal = { textColor = new Color(1f, 0.85f, 0.3f) } }, GUILayout.Height(24));
+                GUILayout.Label("CONTROLES", headerYellowStyle, GUILayout.Height(24));
                 GUILayout.Space(4);
                 GUILayout.Label(
-                    "[W / A / S / D]  -  Mover al Guasón / Guardián\n" +
+                    "[W / A / S / D]  -  Mover al Guardián\n" +
                     "[ESPACIO]        -  Saltar\n" +
                     "[E]              -  Recoger residuo del suelo\n" +
                     "[E] (en caneca)  -  Depositar residuo\n" +
@@ -215,16 +259,16 @@ public class MainMenuManager : MonoBehaviour
                 break;
 
             case 2:
-                GUILayout.Label("CLASIFICACIÓN DE RESIDUOS", new GUIStyle(bodyStyle) { fontSize = 16, fontStyle = FontStyle.Bold, normal = { textColor = new Color(0.4f, 0.8f, 1f) } }, GUILayout.Height(24));
+                GUILayout.Label("CLASIFICACIÓN DE RESIDUOS", headerBlueStyle, GUILayout.Height(24));
                 GUILayout.Space(4);
                 GUILayout.Label(
-                    "[A] Caneca AMARILLA  -  Aprovechables\n" +
-                    "     Botellas plásticas y botellas de vidrio azul\n\n" +
-                    "[O] Caneca VERDE     -  Orgánicos\n" +
+                    "[A] Caneca BLANCA / AZUL  -  Aprovechables\n" +
+                    "     Botellas plásticas, bolsas y botellas de vidrio\n\n" +
+                    "[O] Caneca VERDE          -  Orgánicos\n" +
                     "     Restos de manzana y montones vegetales\n\n" +
-                    "[N] Caneca NEGRA     -  No Aprovechable\n" +
-                    "     Cajas de pizza engrasadas y otros residuos\n\n" +
-                    "¡Cada acierto da puntos y tiempo extra para rescatar el parque!", bodyStyle, GUILayout.Height(210));
+                    "[N] Caneca NEGRA          -  No Aprovechable\n" +
+                    "     Cajas de pizza engrasadas, pilas y otros residuos\n\n" +
+                    "¡Cada acierto da tiempo extra y las misiones suman puntos y vida!", bodyStyle, GUILayout.Height(210));
                 break;
         }
     }

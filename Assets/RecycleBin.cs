@@ -159,10 +159,10 @@ public class RecycleBin : MonoBehaviour
             result.timeBonus = baseBonusTime;
 
             string comboMsg = (mult > 1f) ? $" (¡Combo x{mult:F1}!)" : "";
-            result.message = $"¡Excelente! Clasificaste {trash.name} en {binName}. (+{result.pointsAwarded} pts{comboMsg})";
+            result.message = $"¡Excelente! Clasificaste {trash.name} en {binName}. (+{result.timeBonus:F0}s{comboMsg})";
             result.educationalFact = trash.educationalFact;
 
-            PlayFeedback(true, result.pointsAwarded, mult);
+            PlayFeedback(true, Mathf.RoundToInt(result.timeBonus), mult);
         }
         else
         {
@@ -201,7 +201,7 @@ public class RecycleBin : MonoBehaviour
             if (depositParticles != null) depositParticles.Play();
             else SpawnProceduralParticleBurst();
 
-            SpawnFloatingText($"+{deltaPoints} PTS" + (multiplier > 1f ? $" (x{multiplier:F1} 🔥)" : ""), Color.green);
+            SpawnFloatingText($"+{deltaPoints}s ¡BIEN!" + (multiplier > 1f ? $" (x{multiplier:F1} 🔥)" : ""), Color.green);
         }
         else
         {

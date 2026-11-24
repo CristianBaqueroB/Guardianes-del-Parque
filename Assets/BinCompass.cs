@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -18,10 +18,10 @@ public class BinCompass : MonoBehaviour
     public float compassRadius = 72f;
 
     [Tooltip("Posición X del centro de la brújula (desde derecha)")]
-    public float rightMargin = 120f;
+    public float rightMargin = 105f;
 
-    [Tooltip("Posición Y del centro de la brújula (desde arriba)")]
-    public float topMargin = 200f;
+    [Tooltip("Posición Y del centro de la brújula (desde arriba, debajo de la tarjeta de misión)")]
+    public float topMargin = 235f;
 
     // Estado interno
     private List<RecycleBin> bins = new List<RecycleBin>();
@@ -140,7 +140,16 @@ public class BinCompass : MonoBehaviour
         if (!show && playerInventory != null)
             show = !playerInventory.IsEmpty;
 
-        if (!show || bins.Count == 0) return;
+        int activeTrashCount = 0;
+        if (RandomTrashGenerator.Instance != null)
+        {
+            foreach (var t in RandomTrashGenerator.Instance.ActiveTrash)
+                if (t != null) activeTrashCount++;
+        }
+        if (!show && activeTrashCount > 0 && activeTrashCount <= 5)
+            show = true;
+
+        if (!show || (bins.Count == 0 && activeTrashCount == 0)) return;
 
         InitStyles();
         EnsureTextures();
@@ -148,7 +157,12 @@ public class BinCompass : MonoBehaviour
         if (mainCam == null) mainCam = Camera.main;
         if (mainCam == null) return;
 
-        float cx = Screen.width - rightMargin;
+        float scale = Mathf.Clamp(Screen.height / 720f, 0.75f, 2.5f);
+        float virtualW = Screen.width / scale;
+        Matrix4x4 prevMatrix = GUI.matrix;
+        GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(scale, scale, 1f));
+
+        float cx = virtualW - rightMargin;
         float cy = topMargin;
 
         float drawSize = compassRadius * 2f;
@@ -208,6 +222,48 @@ public class BinCompass : MonoBehaviour
             GUI.Label(new Rect(cx - 50, cy + compassRadius + 6f, 100, 18), "MOCHILA LLENA!", labelStyle);
             GUI.color = Color.white;
         }
+        else if (RandomTrashGenerator.Instance != null)
+        {
+            // Indicar el residuo más cercano en color cian cuando hay espacio en mochila
+            GameObject nearestTrash = null;
+            float minDist = float.MaxValue;
+            foreach (var t in RandomTrashGenerator.Instance.ActiveTrash)
+            {
+                if (t == null) continue;
+                float d = Vector3.Distance(playerPos, t.transform.position);
+                if (d < minDist)
+                {
+                    minDist = d;
+                    nearestTrash = t;
+                }
+            }
+
+            if (nearestTrash != null && minDist >= 1.5f)
+            {
+                Vector3 toTrash = nearestTrash.transform.position - playerPos;
+                toTrash.y = 0;
+                float angle = Vector3.SignedAngle(playerForward, toTrash.normalized, Vector3.up);
+                float rad = angle * Mathf.Deg2Rad;
+                float arrowRadius = compassRadius * 0.72f;
+                float ax = cx + Mathf.Sin(rad) * arrowRadius;
+                float ay = cy - Mathf.Cos(rad) * arrowRadius;
+
+                Color trashCol = new Color(0.3f, 0.95f, 1f, 0.95f);
+                GUI.color = trashCol;
+                float arrowSize = 15f;
+                Rect arrowRect = new Rect(ax - arrowSize / 2f, ay - arrowSize / 2f, arrowSize, arrowSize);
+                Matrix4x4 matrixBackup = GUI.matrix;
+                GUIUtility.RotateAroundPivot(angle, new Vector2(ax, ay));
+                GUI.DrawTexture(arrowRect, arrowTex, ScaleMode.StretchToFill, true);
+                GUI.matrix = matrixBackup;
+
+                string distLabel = minDist < 10f ? "<10m" : $"{Mathf.RoundToInt(minDist)}m";
+                GUI.Label(new Rect(ax - 26, ay + 9, 52, 14), $"Bas {distLabel}", distanceStyle);
+                GUI.color = Color.white;
+            }
+        }
+
+        GUI.matrix = prevMatrix;
     }
 
     private string GetCategoryInitial(TrashCategory cat)

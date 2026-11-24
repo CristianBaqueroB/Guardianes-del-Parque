@@ -39,7 +39,7 @@ public class EcoMissionManager : MonoBehaviour
     [Range(0f, 100f)]
     public float currentPurity = 25f; // Empieza al 25% (Parque descuidado)
     private float targetPurity = 25f;
-    public float purityPerCorrectDeposit = 12f; // +12% por cada residuo bien clasificado
+    public float purityPerCorrectDeposit = 7.5f; // +7.5% por acierto (10 aciertos = 100%)
     public float purityPenaltyPerMistake = 6f;   // -6% por error de caneca
     public float purityLerpSpeed = 3f;
 
@@ -262,12 +262,16 @@ public class EcoMissionManager : MonoBehaviour
         completedMissionTitle = active.title;
         missionBannerTimer = 4.5f;
 
-        // Bonificaciones en GameManager
+        // Bonificaciones en GameManager y curación de vida
         if (GameManager.instance != null)
         {
             GameManager.instance.score += active.bonusPoints;
             GameManager.instance.timeRemaining += active.bonusTime;
             GameManager.instance.UpdateUI();
+        }
+        if (PlayerHealth.Instance != null)
+        {
+            PlayerHealth.Instance.Heal(15f);
         }
 
         // Sonido de fanfarria
@@ -383,6 +387,7 @@ public class EcoMissionManager : MonoBehaviour
 
     #region HUD Drawing (OnGUI)
     private GUIStyle timerStyle;
+    private GUIStyle binIndStyle;
 
     private void InitStyles()
     {
@@ -424,6 +429,14 @@ public class EcoMissionManager : MonoBehaviour
         };
         bannerStyle.normal.textColor = new Color(1f, 0.95f, 0.3f);
 
+        binIndStyle = new GUIStyle(GUI.skin.box)
+        {
+            fontSize = 11,
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleCenter,
+            wordWrap = false
+        };
+
         stylesInit = true;
     }
 
@@ -434,6 +447,12 @@ public class EcoMissionManager : MonoBehaviour
             return;
 
         InitStyles();
+
+        float scale = Mathf.Clamp(Screen.height / 720f, 0.75f, 2.5f);
+        float virtualW = Screen.width / scale;
+        float virtualH = Screen.height / scale;
+        Matrix4x4 prevMatrix = GUI.matrix;
+        GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(scale, scale, 1f));
 
         // 1. Tarjeta Unificada de Estado y Pureza (Esquina Superior Izquierda)
         float hudX = 20f;
@@ -479,7 +498,7 @@ public class EcoMissionManager : MonoBehaviour
 
             float timerWidth = 150f;
             float timerHeight = 38f;
-            float timerX = (Screen.width - timerWidth) / 2f;
+            float timerX = (virtualW - timerWidth) / 2f;
             float timerY = 20f;
 
             GUI.backgroundColor = isUrgent ? new Color(0.48f, 0.12f, 0.12f, 0.95f) : new Color(0.06f, 0.10f, 0.16f, 0.92f);
@@ -495,7 +514,7 @@ public class EcoMissionManager : MonoBehaviour
         {
             float mWidth = 360f;
             float mHeight = 125f;
-            float mX = Screen.width - mWidth - 20f;
+            float mX = virtualW - mWidth - 20f;
             float mY = 20f;
 
             GUI.backgroundColor = new Color(0.06f, 0.12f, 0.16f, 0.92f);
@@ -514,27 +533,29 @@ public class EcoMissionManager : MonoBehaviour
             GUILayout.EndArea();
         }
 
-        // 4. Banner animado al completar misión (Centro de pantalla)
-        if (missionBannerTimer > 0f)
+        // 4. Banner de respaldo al completar misión (solo si InteractionHUD no está activo, para evitar solapamiento)
+        if (missionBannerTimer > 0f && InteractionHUD.Instance == null)
         {
             float bWidth = 460f;
             float bHeight = 55f;
-            float bX = (Screen.width - bWidth) / 2f;
-            float bY = 125f;
+            float bX = (virtualW - bWidth) / 2f;
+            float bY = 72f;
 
             GUI.backgroundColor = new Color(0.1f, 0.45f, 0.2f, 0.95f);
             GUI.Box(new Rect(bX, bY, bWidth, bHeight), $"MISION CUMPLIDA!\n{completedMissionTitle}", bannerStyle);
         }
 
         // 5. Indicadores de caneca en borde inferior (solo cuando mochila llena)
-        DrawBinEdgeIndicators();
+        DrawBinEdgeIndicators(virtualW, virtualH);
+
+        GUI.matrix = prevMatrix;
     }
 
     private PlayerInventory cachedPlayerInv;
     private RecycleBin[] cachedBins;
     private float binCacheTime = 0f;
 
-    private void DrawBinEdgeIndicators()
+    private void DrawBinEdgeIndicators(float virtualW, float virtualH)
     {
         var gm = GameManager.instance;
         if (gm == null) return;
@@ -565,16 +586,8 @@ public class EcoMissionManager : MonoBehaviour
         float boxH = 40f;
         float spacing = 6f;
         float totalW = count * (boxW + spacing) - spacing;
-        float startX = (Screen.width - totalW) / 2f;
-        float yBase = Screen.height - boxH - 20f;
-
-        GUIStyle binIndStyle = new GUIStyle(GUI.skin.box)
-        {
-            fontSize = 11,
-            fontStyle = FontStyle.Bold,
-            alignment = TextAnchor.MiddleCenter,
-            wordWrap = false
-        };
+        float startX = (virtualW - totalW) / 2f;
+        float yBase = virtualH - boxH - 20f;
 
         for (int i = 0; i < count; i++)
         {

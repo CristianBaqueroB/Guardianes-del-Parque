@@ -34,7 +34,9 @@ public class InteractionHUD : MonoBehaviour
     // Estilos OnGUI
     private GUIStyle promptBoxStyle;
     private GUIStyle notifBoxStyle;
-    private GUIStyle invBoxStyle;
+    private GUIStyle slotBoxStyle;
+    private GUIStyle slotTitleStyle;
+    private GUIStyle slotHintStyle;
     private bool stylesInitialized = false;
 
     private void Awake()
@@ -201,13 +203,31 @@ public class InteractionHUD : MonoBehaviour
             wordWrap = true
         };
 
-        invBoxStyle = new GUIStyle(GUI.skin.box)
+        slotBoxStyle = new GUIStyle(GUI.skin.box)
         {
-            fontSize = 13,
-            alignment = TextAnchor.UpperLeft,
-            wordWrap = true
+            fontSize = 11,
+            alignment = TextAnchor.UpperCenter,
+            wordWrap = true,
+            richText = true,
+            padding = new RectOffset(6, 6, 6, 6)
         };
-        invBoxStyle.normal.textColor = Color.white;
+        slotBoxStyle.normal.textColor = Color.white;
+
+        slotTitleStyle = new GUIStyle(GUI.skin.label)
+        {
+            fontSize = 12,
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleRight,
+            richText = true
+        };
+        slotTitleStyle.normal.textColor = Color.white;
+
+        slotHintStyle = new GUIStyle(GUI.skin.label)
+        {
+            fontSize = 11,
+            alignment = TextAnchor.MiddleRight
+        };
+        slotHintStyle.normal.textColor = new Color(0.85f, 0.85f, 0.85f);
 
         stylesInitialized = true;
     }
@@ -231,13 +251,19 @@ public class InteractionHUD : MonoBehaviour
         // Si no hay UGUI asignada para los textos, renderizar un HUD nativo claro y estilizado
         InitStyles();
 
-        // 1. Prompt de Interacción (Centro inferior)
+        float scale = Mathf.Clamp(Screen.height / 720f, 0.75f, 2.5f);
+        float virtualW = Screen.width / scale;
+        float virtualH = Screen.height / scale;
+        Matrix4x4 prevMatrix = GUI.matrix;
+        GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(scale, scale, 1f));
+
+        // 1. Prompt de Interacción (Centro inferior, por encima de los indicadores de canecas)
         if (!string.IsNullOrEmpty(currentPrompt) && promptText == null)
         {
             float width = Mathf.Max(360, currentPrompt.Length * 11);
-            float height = 48;
-            float x = (Screen.width - width) / 2f;
-            float y = Screen.height - 110f;
+            float height = 44;
+            float x = (virtualW - width) / 2f;
+            float y = virtualH - 122f;
 
             GUI.backgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.88f);
             GUI.Box(new Rect(x, y, width, height), currentPrompt, promptBoxStyle);
@@ -248,7 +274,7 @@ public class InteractionHUD : MonoBehaviour
         {
             float width = 540;
             float height = string.IsNullOrEmpty(activeFact) ? 45 : 78;
-            float x = (Screen.width - width) / 2f;
+            float x = (virtualW - width) / 2f;
             float y = 68f;
 
             GUI.backgroundColor = isNotificationSuccess ? new Color(0.1f, 0.35f, 0.15f, 0.92f) : new Color(0.48f, 0.12f, 0.1f, 0.92f);
@@ -263,40 +289,73 @@ public class InteractionHUD : MonoBehaviour
             GUI.Box(new Rect(x, y, width, height), content, notifBoxStyle);
         }
 
-        // 3. Mini-HUD de Mochila / Inventario (Esquina inferior derecha)
+        // 3. Hotbar Visual de Mochila / Inventario (Esquina inferior derecha)
         if (cachedInventory != null && inventoryText == null)
         {
-            float width = 260;
-            float extraHeight = (cachedInventory.CurrentCount > 1) ? 22 : 0;
-            float height = 35 + (cachedInventory.CurrentCount * 22) + extraHeight;
-            float x = Screen.width - width - 20;
-            float y = Screen.height - height - 20;
+            int maxCap = Mathf.Max(1, cachedInventory.MaxCapacity);
+            float slotW = 104f;
+            float slotH = 66f;
+            float spacing = 6f;
+            float totalW = maxCap * slotW + (maxCap - 1) * spacing;
+            float startX = virtualW - totalW - 20f;
+            float startY = virtualH - slotH - 20f;
 
-            GUI.backgroundColor = new Color(0.08f, 0.12f, 0.16f, 0.88f);
+            // Encabezado encima de los slots
+            GUI.Label(
+                new Rect(startX, startY - 22f, totalW, 20f),
+                $"🎒 Mochila ({cachedInventory.CurrentCount}/{maxCap})   <color=#FFD166>[Q / Rueda / 1-3]</color>",
+                slotTitleStyle
+            );
 
-            string invContent = $"🎒 Mochila ({cachedInventory.CurrentCount}/{cachedInventory.MaxCapacity}):\n";
-            if (cachedInventory.IsEmpty)
+            for (int i = 0; i < maxCap; i++)
             {
-                invContent += " <i>(Vacía - Recoge basura)</i>";
-            }
-            else
-            {
-                for (int i = 0; i < cachedInventory.Items.Count; i++)
+                float sx = startX + i * (slotW + spacing);
+                bool hasItem = i < cachedInventory.Items.Count;
+                bool isSelected = hasItem && (i == cachedInventory.SelectedIndex);
+
+                Color catColor = new Color(0.4f, 0.45f, 0.5f);
+                string slotContent = $"<color=#8899AA>[{i + 1}]</color>\n<i>Vacío</i>";
+
+                if (hasItem)
                 {
                     var item = cachedInventory.Items[i];
-                    bool isSelected = (i == cachedInventory.SelectedIndex);
-                    string selTag = isSelected ? "▶ " : "    ";
-                    string handTag = isSelected ? " [EN MANO]" : "";
-                    invContent += $"{selTag}• {item.name} [{item.category}]{handTag}\n";
+                    string catHex = "#FFFFFF";
+                    switch (item.category)
+                    {
+                        case TrashCategory.Aprovechables:
+                            catColor = new Color(0.2f, 0.6f, 1f);
+                            catHex = "#66B2FF";
+                            break;
+                        case TrashCategory.Organico:
+                            catColor = new Color(0.4f, 0.88f, 0.15f);
+                            catHex = "#80F040";
+                            break;
+                        case TrashCategory.NoAprovechable:
+                            catColor = new Color(0.62f, 0.62f, 0.62f);
+                            catHex = "#CCCCCC";
+                            break;
+                    }
+
+                    string activeTag = isSelected ? "\n<color=#FFE600><b>[EN MANO]</b></color>" : "";
+                    slotContent = $"<color=#FFE600><b>[{i + 1}]</b></color> <color={catHex}><b>{item.name}</b></color>{activeTag}";
                 }
 
-                if (cachedInventory.CurrentCount > 1)
+                GUI.backgroundColor = isSelected
+                    ? new Color(0.18f, 0.28f, 0.38f, 0.96f)
+                    : new Color(0.07f, 0.10f, 0.15f, 0.85f);
+
+                GUI.Box(new Rect(sx, startY, slotW, slotH), slotContent, slotBoxStyle);
+
+                // Barra superior de color por categoría (o borde dorado si está seleccionado)
+                if (hasItem || isSelected)
                 {
-                    invContent += "<i>[Q] o Rueda: Alternar residuo</i>";
+                    GUI.color = isSelected ? new Color(1f, 0.88f, 0.2f, 0.95f) : catColor;
+                    GUI.DrawTexture(new Rect(sx + 2f, startY + 2f, slotW - 4f, 4f), Texture2D.whiteTexture);
+                    GUI.color = Color.white;
                 }
             }
-
-            GUI.Box(new Rect(x, y, width, height), invContent.TrimEnd(), invBoxStyle);
         }
+
+        GUI.matrix = prevMatrix;
     }
 }

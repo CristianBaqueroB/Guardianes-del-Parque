@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -35,14 +35,21 @@ public class EnemyController : MonoBehaviour
     [Header("Capas de Obstaculos")]
     [SerializeField] private LayerMask obstacleLayers;
 
+    [Header("Contaminacion Activa")]
+    [SerializeField] private float litterInterval = 18f;
+    private float _litterTimer = 12f;
+
     private NavMeshAgent _agent;
     private Animator _animator;
+    private AudioSource _audioSource;
+    private static AudioClip _alertClip;
     private EnemyState _state = EnemyState.Patrolling;
     private bool _isHitting;
     private float _attackTimer;
     private float _patrolWaitTimer;
     private Vector3 _patrolTarget;
     private bool _waitingAtPatrolPoint = false;
+    private bool _showDangerWarning = false;
 
     private static readonly int SpeedHash        = Animator.StringToHash("Speed");
     private static readonly int IsFollowingHash  = Animator.StringToHash("IsFollowing");
@@ -51,6 +58,13 @@ public class EnemyController : MonoBehaviour
     {
         _agent    = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
+        _audioSource = GetComponent<AudioSource>();
+        if (_audioSource == null)
+        {
+            _audioSource = gameObject.AddComponent<AudioSource>();
+            _audioSource.playOnAwake = false;
+            _audioSource.spatialBlend = 0.4f;
+        }
     }
 
     public void Start()
@@ -67,9 +81,12 @@ public class EnemyController : MonoBehaviour
     public void Update()
     {
         // Si el juego no ha iniciado o esta pausado/terminado, detener al enemigo
-        if (GameManager.instance != null && !GameManager.instance.IsGameStarted())
+        if (GameManager.instance != null &&
+            (!GameManager.instance.IsGameStarted() || GameManager.instance.isPaused ||
+             GameManager.instance.isGameOver || GameManager.instance.isVictory))
         {
             _agent.isStopped = true;
+            _showDangerWarning = false;
             return;
         }
 
@@ -81,11 +98,13 @@ public class EnemyController : MonoBehaviour
         }
 
         float distToPlayer = Vector3.Distance(player.position, transform.position);
+        _showDangerWarning = (_state == EnemyState.Chasing && distToPlayer <= 12f);
 
         switch (_state)
         {
             case EnemyState.Patrolling:
                 DoPatrol();
+                HandleLittering();
                 if (distToPlayer <= detectionRange && CanSeePlayer())
                 {
                     _state = EnemyState.Chasing;
@@ -245,6 +264,19 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    private void HandleLittering()
+    {
+        _litterTimer -= Time.deltaTime;
+        if (_litterTimer <= 0f)
+        {
+            _litterTimer = litterInterval;
+            if (RandomTrashGenerator.Instance != null)
+            {
+                RandomTrashGenerator.Instance.SpawnTrashAt(transform.position);
+            }
+        }
+    }
+
     private void ShowDetectionAlert()
     {
         if (InteractionHUD.Instance != null)
@@ -252,6 +284,37 @@ public class EnemyController : MonoBehaviour
             InteractionHUD.Instance.ShowNotification(
                 "Cuidado! El contaminador te detecto.", null, false, 2f);
         }
+
+        if (_audioSource != null)
+        {
+            if (_alertClip == null)
+            {
+                int sr = 22050;
+                int samples = (int)(sr * 0.25f);
+                float[] data = new float[samples];
+                for (int i = 0; i < samples; i++)
+                {
+                    float t = (float)i / samples;
+                    float freq = (t < 0.5f) ? 620f : 440f;
+                    float env = 1f - t;
+                    data[i] = Mathf.Sin(2f * Mathf.PI * freq * ((float)i / sr)) * env * 0.45f;
+                }
+                _alertClip = AudioClip.Create("EnemyAlert", samples, 1, sr, false);
+                _alertClip.SetData(data, 0);
+            }
+            float vol = (AmbientAudioManager.Instance != null) ? AmbientAudioManager.Instance.masterVolume * 0.7f : 0.4f;
+            _audioSource.PlayOneShot(_alertClip, vol);
+        }
+    }
+
+    private void OnGUI()
+    {
+        if (!_showDangerWarning) return;
+        float pulse = 0.35f + 0.35f * Mathf.Sin(Time.realtimeSinceStartup * 7f);
+        GUI.color = new Color(1f, 0.2f, 0.15f, pulse * 0.25f);
+        GUI.DrawTexture(new Rect(0, 0, Screen.width, 10f), Texture2D.whiteTexture);
+        GUI.DrawTexture(new Rect(0, Screen.height - 10f, Screen.width, 10f), Texture2D.whiteTexture);
+        GUI.color = Color.white;
     }
 
     private PlayerHealth FindPlayerHealth()

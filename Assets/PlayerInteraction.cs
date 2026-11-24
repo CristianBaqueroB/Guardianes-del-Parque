@@ -8,6 +8,8 @@ public class PlayerInteraction : MonoBehaviour
 
     private TrashData currentTrash = null;
     private RecycleBin currentBin = null;
+    private AudioSource pickupAudioSource;
+    private static AudioClip proceduralPickupClip;
 
     private void Awake()
     {
@@ -47,6 +49,14 @@ public class PlayerInteraction : MonoBehaviour
         if (GetComponent<PlayerHealth>() == null)
         {
             gameObject.AddComponent<PlayerHealth>();
+        }
+
+        pickupAudioSource = GetComponent<AudioSource>();
+        if (pickupAudioSource == null)
+        {
+            pickupAudioSource = gameObject.AddComponent<AudioSource>();
+            pickupAudioSource.playOnAwake = false;
+            pickupAudioSource.spatialBlend = 0f;
         }
     }
 
@@ -173,6 +183,7 @@ public class PlayerInteraction : MonoBehaviour
 
         // Dispara la animación de recolección de forma segura si el parámetro existe
         TriggerPickUpAnimation();
+        PlayPickupSound();
 
         TrashData trashToCollect = currentTrash;
         currentTrash = null;
@@ -197,6 +208,28 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         Destroy(trashToCollect.gameObject);
+    }
+
+    private void PlayPickupSound()
+    {
+        if (pickupAudioSource == null) return;
+        if (proceduralPickupClip == null)
+        {
+            int sr = 22050;
+            int samples = (int)(sr * 0.14f);
+            float[] data = new float[samples];
+            for (int i = 0; i < samples; i++)
+            {
+                float t = (float)i / samples;
+                float freq = (t < 0.5f) ? 520f : 780f;
+                float env = 1f - t;
+                data[i] = Mathf.Sin(2f * Mathf.PI * freq * ((float)i / sr)) * env * 0.4f;
+            }
+            proceduralPickupClip = AudioClip.Create("PickupSfx", samples, 1, sr, false);
+            proceduralPickupClip.SetData(data, 0);
+        }
+        float vol = (AmbientAudioManager.Instance != null) ? AmbientAudioManager.Instance.masterVolume * 0.6f : 0.35f;
+        pickupAudioSource.PlayOneShot(proceduralPickupClip, vol);
     }
 
     private void TriggerPickUpAnimation()
